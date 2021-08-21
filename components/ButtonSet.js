@@ -31,7 +31,6 @@ export default function ButtonSet({
 
   function runCommand(command) {
     if (typeof command === 'string') {
-      console.log('sendMessage: ', typeof sendMessage);
       sendMessage(command);
     }
     if (typeof command === 'object') {

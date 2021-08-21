@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import UsageData from './components/UsageData.js';
 import ButtonSet from './components/ButtonSet.js';
@@ -6,15 +6,25 @@ import buttons from './buttons.js';
 import WS from 'react-native-websocket'
 
 export default function App() {
+  const [usageData, setUsageData] = useState(['99', '88', '77']);
+  const socketRef = useRef();
   const ENABLE_VIDEO = false;
   const isLoading = false;
   const connectionStatus = 'CONNECTED'
-  const usageData = ['99', '88', '77'];
-  const DEFAULT_SPEED = 25;
-  const socketRef = useRef();
-  const sendMessage = () => {};
-  const sendJsonMessage = () => {};
+  const DEFAULT_SPEED = 25; // percentage (0 to 100)
+  const INFO_UPDATE_SPEED = 3000; // fetch info every 10 seconds
   
+  useEffect(() => {
+    // Fetch the usage data
+    clearInterval(timer);
+    const timer = setInterval(() => {
+      if (socketRef.current?.send) {
+        socketRef.current?.send('get_info');
+      }
+    }, INFO_UPDATE_SPEED);
+    return () => clearInterval(timer);
+  }, []);
+
   // If we are not not connected, load the waiting graphic
   if (isLoading) {
     return (
@@ -40,8 +50,16 @@ export default function App() {
             socketRef.current?.send(`wsB ${DEFAULT_SPEED}`);
 
           }}
-          onMessage={console.log}
-          onError={console.log}
+          onMessage={({data}) => {
+            if (typeof data === 'string') {
+              const message = JSON.parse(data);
+              if (message.title === 'get_info') {
+                setUsageData(message.data);
+              }
+            }
+            
+          }}
+          onError={console.warn}
           onClose={console.log}
           reconnect // Will try to reconnect onClose
         />
