@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, Pressable, View } from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, Pressable, View} from 'react-native';
 
-const Button = ({
-  label, command, description, variant, runCommand, cancelCommand,
-}) => (
-  <Pressable 
+const Button = ({label, command, description, runCommand, cancelCommand}) => (
+  <Pressable
     onPressIn={() => runCommand(command)}
-    onPressOut={() => cancelCommand && runCommand(cancelCommand)}
-  >
+    onPressOut={() => cancelCommand && runCommand(cancelCommand)}>
     <Text
       key={label}
       title={description}
@@ -17,15 +14,17 @@ const Button = ({
         backgroundColor: 'aqua',
         marginBottom: 5,
         borderRadius: 5,
-      }}
-    >
+      }}>
       {label}
     </Text>
   </Pressable>
 );
 
 export default function ButtonSet({
-  defaultSpeed, buttons, sendMessage, sendJsonMessage,
+  defaultSpeed,
+  buttons,
+  sendMessage,
+  sendJsonMessage,
 }) {
   const [speed, setSpeed] = useState(defaultSpeed);
 
@@ -40,25 +39,25 @@ export default function ButtonSet({
 
   return (
     <View>
-      {buttons.map(({
-        name, set, disabled,
-      }) => {
+      {buttons.map(({name, set, disabled}) => {
         // Do not render disabled controls (see apiButtons.js)
-        if (disabled) { return null; }
+        if (disabled) {
+          return null;
+        }
 
         return (
           <View mb={3} key={name}>
-            <Text mb={2} sx={{ display: 'block' }}>{name}</Text>
-            {set?.map(({
-              type, min, max, ...button
-            }) => (
+            <Text mb={2} sx={{display: 'block'}}>
+              {name}
+            </Text>
+            {set?.map(({type, min, max, ...button}) =>
               type === 'range' ? (
-                  <Text key={button.command}>
-                    {
-                      // eslint-disable-next-line prefer-template
-                      button.label + ' ' + speed + '%'
-                    }
-                    {/* <Slider
+                <Text key={button.command}>
+                  {
+                    // eslint-disable-next-line prefer-template
+                    button.label + ' ' + speed + '%'
+                  }
+                  {/* <Slider
                     defaultValue={defaultSpeed}
                     min={min}
                     max={max}
@@ -69,7 +68,7 @@ export default function ButtonSet({
                       setSpeed(e.target.value);
                     }}
                   /> */}
-                  </Text>                  
+                </Text>
               ) : (
                 <Button
                   key={button.command}
@@ -77,8 +76,8 @@ export default function ButtonSet({
                   variant="go"
                   {...button}
                 />
-              )
-            ))}
+              ),
+            )}
           </View>
         );
       })}
@@ -89,9 +88,9 @@ export default function ButtonSet({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'blue',
-    display: 'flex', 
+    display: 'flex',
     marginBottom: 40,
     padding: 10,
-    borderRadius: 3    
+    borderRadius: 3,
   },
 });
