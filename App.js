@@ -64,7 +64,7 @@ export default function App() {
           reconnect // Will try to reconnect onClose
         />
       <Text style={{ color: 'darkgreen' }}>
-        {`Websocket ${connectionStatus}`}
+        {`Websockets ${connectionStatus}`}
       </Text>
       <UsageData data={usageData} />
       <ButtonSet
