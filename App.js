@@ -27,7 +27,7 @@ export default function App() {
   const connectionStatus = 'CONNECTED';
   const DEFAULT_SPEED = 25; // percentage (0 to 100)
   const INFO_UPDATE_SPEED = 10000; // fetch info every 10 seconds
-  const tolleranceInSeconds = 3;
+  const movementTolerance = 3;
 
   const toggleControls = () => {
     if (zeroPoint) {
@@ -39,23 +39,23 @@ export default function App() {
 
   useEffect(() => {
     if (zeroPoint) {
-      if (movement.x - zeroPoint.x > tolleranceInSeconds) {
+      if (movement.x - zeroPoint.x > movementTolerance) {
         setArrows(a => ({...a, x: 'left'}));
-      } else if (movement.x - zeroPoint.x < -1 * tolleranceInSeconds) {
+      } else if (movement.x - zeroPoint.x < -1 * movementTolerance) {
         setArrows(a => ({...a, x: 'right'}));
       } else {
         setArrows(a => ({...a, x: null}));
       }
-      if (movement.y - zeroPoint.y > tolleranceInSeconds) {
+      if (movement.y - zeroPoint.y > movementTolerance) {
         setArrows(a => ({...a, y: 'backward'}));
-      } else if (movement.y - zeroPoint.y < -1 * tolleranceInSeconds) {
+      } else if (movement.y - zeroPoint.y < -1 * movementTolerance) {
         setArrows(a => ({...a, y: 'forward'}));
       } else {
         setArrows(a => ({...a, y: null}));
       }
-      if (movement.z - zeroPoint.z > tolleranceInSeconds) {
+      if (movement.z - zeroPoint.z > movementTolerance) {
         setArrows(a => ({...a, z: 'forward'}));
-      } else if (movement.z - zeroPoint.z < -1 * tolleranceInSeconds) {
+      } else if (movement.z - zeroPoint.z < -1 * movementTolerance) {
         setArrows(a => ({...a, z: 'backward'}));
       } else {
         setArrows(a => ({...a, z: null}));
@@ -124,6 +124,19 @@ export default function App() {
         <Text style={styles.title}>{`Websocket ${connectionStatus}`}</Text>
       )}
       {!isLoading && zeroPoint && <Arrows arrows={arrows} />}
+      {!isLoading && zeroPoint && (
+        <View>
+          <Text>{`X: ${(movement.x - zeroPoint.x).toFixed(
+            0,
+          )} / ${movement.x.toFixed(3)}`}</Text>
+          <Text>{`Y: ${(movement.y - zeroPoint.y).toFixed(
+            0,
+          )} / ${movement.y.toFixed(3)}`}</Text>
+          <Text>{`Z: ${(movement.z - zeroPoint.z).toFixed(
+            0,
+          )} / ${movement.z.toFixed(3)}`}</Text>
+        </View>
+      )}
       {!isLoading && (
         <>
           <Pressable onPress={toggleControls}>
