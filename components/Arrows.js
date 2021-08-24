@@ -8,21 +8,10 @@ function Arrow({arrow}) {
   return <Icon name={arrow} size={30} color="#900" />;
 }
 
-export default function Arrows({arrows}) {
-  // Render this component to debug the movement values
-  // const stats = (
-  //   <>
-  //     <Text style={styles.title}>{`X: ${Math.round(
-  //       movement.x - zeroPoint.x,
-  //     )}`}</Text>
-  //     <Text style={styles.title}>{`Y: ${Math.round(
-  //       movement.y - zeroPoint.y,
-  //     )}`}</Text>
-  //     <Text style={styles.title}>{`Z ${Math.round(
-  //       movement.z - zeroPoint.z,
-  //     )}`}</Text>
-  //   </>
-  // );
+export default function Arrows({arrows, zeroPoint}) {
+  if (!zeroPoint) {
+    return null;
+  }
 
   return (
     <View mb={3} height={70} width={70} sx={styles.container}>

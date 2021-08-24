@@ -5,16 +5,7 @@ const Button = ({label, command, description, runCommand, cancelCommand}) => (
   <Pressable
     onPressIn={() => runCommand(command)}
     onPressOut={() => cancelCommand && runCommand(cancelCommand)}>
-    <Text
-      key={label}
-      title={description}
-      style={{
-        marginBottom: 5,
-        padding: 5,
-        backgroundColor: 'aqua',
-        marginBottom: 5,
-        borderRadius: 5,
-      }}>
+    <Text key={label} title={description} style={styles.button}>
       {label}
     </Text>
   </Pressable>
@@ -26,7 +17,7 @@ export default function ButtonSet({
   sendMessage,
   sendJsonMessage,
 }) {
-  const [speed, setSpeed] = useState(defaultSpeed);
+  const [speed] = useState(defaultSpeed);
 
   function runCommand(command) {
     if (typeof command === 'string') {
@@ -53,21 +44,7 @@ export default function ButtonSet({
             {set?.map(({type, min, max, ...button}) =>
               type === 'range' ? (
                 <Text key={button.command}>
-                  {
-                    // eslint-disable-next-line prefer-template
-                    button.label + ' ' + speed + '%'
-                  }
-                  {/* <Slider
-                    defaultValue={defaultSpeed}
-                    min={min}
-                    max={max}
-                    onChange={(e) => {
-                      // TODO: add error handling here
-                      // eslint-disable-next-line prefer-template
-                      sendMessage(button.command + ' ' + e.target.value);
-                      setSpeed(e.target.value);
-                    }}
-                  /> */}
+                  {button.label + ' ' + speed + '%'}
                 </Text>
               ) : (
                 <Button
@@ -92,5 +69,11 @@ const styles = StyleSheet.create({
     marginBottom: 40,
     padding: 10,
     borderRadius: 3,
+  },
+  button: {
+    marginBottom: 5,
+    padding: 5,
+    backgroundColor: 'aqua',
+    borderRadius: 5,
   },
 });
