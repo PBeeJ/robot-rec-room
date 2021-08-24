@@ -29,7 +29,7 @@ export default function ButtonSet({
   }
 
   return (
-    <View>
+    <View style={styles.container}>
       {buttons.map(({name, set, disabled}) => {
         // Do not render disabled controls (see apiButtons.js)
         if (disabled) {
@@ -37,10 +37,8 @@ export default function ButtonSet({
         }
 
         return (
-          <View mb={3} key={name}>
-            <Text mb={2} sx={{display: 'block'}}>
-              {name}
-            </Text>
+          <View key={name}>
+            <Text sx={{display: 'block', paddingLeft: 15}}>{name}</Text>
             {set?.map(({type, min, max, ...button}) =>
               type === 'range' ? (
                 <Text key={button.command}>
@@ -64,14 +62,16 @@ export default function ButtonSet({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'blue',
-    display: 'flex',
-    marginBottom: 40,
+    position: 'absolute',
+    flexWrap: 'wrap',
+    right: 0,
+    top: 0,
+    bottom: 0,
     padding: 10,
-    borderRadius: 3,
   },
   button: {
     marginBottom: 5,
+    marginLeft: 10,
     padding: 5,
     backgroundColor: 'aqua',
     borderRadius: 5,

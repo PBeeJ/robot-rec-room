@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 // TODO: start the controls when you touch the screen, and reset/cancel when not touching
 
 function Arrow({arrow}) {
-  return <Icon name={arrow} size={30} color="#900" />;
+  return <Icon name={arrow} size={60} color="#900" />;
 }
 
 export default function Arrows({arrows, zeroPoint}) {
@@ -14,18 +14,18 @@ export default function Arrows({arrows, zeroPoint}) {
   }
 
   return (
-    <View mb={3} height={70} width={70} sx={styles.container}>
+    <View mb={3} height={140} width={140} sx={styles.container}>
       <View style={styles.upDownArrows}>
         <Arrow
           arrow={
-            arrows?.x === 'left'
+            arrows?.y === 'left'
               ? 'arrow-left-thick'
               : 'arrow-left-bold-outline'
           }
         />
         <Arrow
           arrow={
-            arrows?.x === 'right'
+            arrows?.y === 'right'
               ? 'arrow-right-thick'
               : 'arrow-right-bold-outline'
           }
@@ -34,7 +34,7 @@ export default function Arrows({arrows, zeroPoint}) {
       <View style={styles.leftRightArrows}>
         <Arrow
           arrow={
-            arrows?.y === 'forward' ? 'arrow-up-thick' : 'arrow-up-bold-outline'
+            arrows?.z === 'forward' ? 'arrow-up-thick' : 'arrow-up-bold-outline'
           }
         />
         <Arrow

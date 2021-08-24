@@ -1,58 +1,68 @@
-import React, {useRef, useEffect, useState} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-
-import WebsocketConnection from './components/WebsocketConnection.js';
-import Information from './components/Information.js';
-import ButtonSet from './components/ButtonSet.js';
-import Arrows from './components/Arrows.js';
-import ArrowData from './components/ArrowData.js';
-import ToggleControls from './components/ToggleControls.js';
-import buttons from './buttons.js';
-
+import React, {useEffect, useRef, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import {accelerometer} from 'react-native-sensors';
 import {setUpdateIntervalForType, SensorTypes} from 'react-native-sensors';
-setUpdateIntervalForType(SensorTypes.accelerometer, 50); // Limit interval to 500ms
-
 import {LogBox} from 'react-native';
-LogBox.ignoreLogs(['NativeEventEmitter']); // Ignore NativeEventEmitter warnings
+import WS from 'react-native-websocket';
+
+import Loading from './components/Loading.js';
+import Controls from './components/Controls.js';
+
+import {OFFLINE_MODE} from '@env';
 
 const DEFAULT_VALUES = {x: 0, y: 0, z: 0};
+const isOnline = OFFLINE_MODE !== 'true';
+const TOLERANCE = {x: 2, y: 1.5, z: 1.5};
+const WEBSOCKET_URL = '192.168.1.10:8888';
+const DEFAULT_SPEED = 25; // percentage (0 to 100)
+const INFO_UPDATE_SPEED = 10000; // fetch info every 10 seconds
+
+LogBox.ignoreLogs(['NativeEventEmitter']); // Ignore NativeEventEmitter warnings
+setUpdateIntervalForType(SensorTypes.accelerometer, 200); // Limit interval to 500ms
 
 export default function App() {
+  const socketRef = useRef();
   const [information, setInformation] = useState(['0', '0', '0']);
   const [movement, setMovement] = useState(DEFAULT_VALUES);
   const [arrows, setArrows] = useState(DEFAULT_VALUES);
   const [zeroPoint, setZeroPoint] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const socketRef = useRef();
-  const connectionStatus = 'CONNECTED';
-  const DEFAULT_SPEED = 25; // percentage (0 to 100)
-  const movementTolerance = 3;
-  const WEBSOCKET_URL = '192.168.1.10:8888';
+  const [isLoading, setIsLoading] = useState(isOnline && true); // Don't show loading when offline
+
+  const handleMessage = ({data}) => {
+    // Don't parse the string if it contains the initial congratulation message
+    if (typeof data === 'string' && !data.includes('congratulation')) {
+      try {
+        const message = JSON.parse(data);
+        if (message.title === 'get_info') {
+          setInformation(message.data);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  const handleOpen = () => {
+    socketRef.current?.send('admin:123456'); // Authorize the connection
+    socketRef.current?.send(`wsB ${DEFAULT_SPEED}`); // Set the default movement speed
+    setIsLoading(false);
+  };
 
   useEffect(() => {
+    function convertMovement(pos, a, b) {
+      if (movement[pos] - zeroPoint[pos] > TOLERANCE[pos]) {
+        setArrows(m => ({...m, [pos]: a}));
+      } else if (movement[pos] - zeroPoint[pos] < -1 * TOLERANCE[pos]) {
+        setArrows(m => ({...m, [pos]: b}));
+      } else {
+        setArrows(m => ({...m, [pos]: null}));
+      }
+    }
+
     if (zeroPoint) {
-      if (movement.x - zeroPoint.x > movementTolerance) {
-        setArrows(a => ({...a, x: 'left'}));
-      } else if (movement.x - zeroPoint.x < -1 * movementTolerance) {
-        setArrows(a => ({...a, x: 'right'}));
-      } else {
-        setArrows(a => ({...a, x: null}));
-      }
-      if (movement.y - zeroPoint.y > movementTolerance) {
-        setArrows(a => ({...a, y: 'backward'}));
-      } else if (movement.y - zeroPoint.y < -1 * movementTolerance) {
-        setArrows(a => ({...a, y: 'forward'}));
-      } else {
-        setArrows(a => ({...a, y: null}));
-      }
-      if (movement.z - zeroPoint.z > movementTolerance) {
-        setArrows(a => ({...a, z: 'forward'}));
-      } else if (movement.z - zeroPoint.z < -1 * movementTolerance) {
-        setArrows(a => ({...a, z: 'backward'}));
-      } else {
-        setArrows(a => ({...a, z: null}));
-      }
+      convertMovement('x', 'forward', 'backward');
+      convertMovement('y', 'right', 'left');
+      convertMovement('z', 'forward', 'backward');
     }
   }, [movement, zeroPoint]);
 
@@ -66,37 +76,43 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
+  useEffect(() => {
+    let timer;
+    // Fetch the info data
+    clearInterval(timer);
+    timer = setInterval(() => {
+      if (socketRef.current?.send) {
+        socketRef.current?.send('get_info');
+      }
+    }, INFO_UPDATE_SPEED);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <View style={styles.container}>
-      <WebsocketConnection
-        url={WEBSOCKET_URL}
-        setIsLoading={setIsLoading}
-        setInformation={setInformation}
-        defaultSpeed={DEFAULT_SPEED}
-      />
+      {isOnline && (
+        <WS
+          ref={socketRef}
+          url={`ws://${WEBSOCKET_URL}`}
+          onOpen={handleOpen}
+          onMessage={handleMessage}
+          onError={console.log}
+          onClose={console.log}
+          reconnect
+        />
+      )}
       {isLoading ? (
-        <>
-          <ActivityIndicator size="large" color="white" />
-          <Text style={styles.text}>{`Connecting to ${WEBSOCKET_URL}`}</Text>
-        </>
+        <Loading message={`Connecting to ${WEBSOCKET_URL}`} />
       ) : (
-        <>
-          <Text style={styles.title}>{`Websocket ${connectionStatus}`}</Text>
-          <ToggleControls
-            setZeroPoint={setZeroPoint}
-            movement={movement}
-            zeroPoint={zeroPoint}
-          />
-          {<Arrows arrows={arrows} zeroPoint={zeroPoint} />}
-          {<ArrowData movement={movement} zeroPoint={zeroPoint} />}
-          <Information data={information} />
-          <ButtonSet
-            buttons={buttons}
-            sendMessage={socketRef.current?.send}
-            sendJsonMessage={socketRef.current?.send}
-            defaultSpeed={DEFAULT_SPEED}
-          />
-        </>
+        <Controls
+          setZeroPoint={setZeroPoint}
+          movement={movement}
+          zeroPoint={zeroPoint}
+          arrows={arrows}
+          information={information}
+          defaultSpeed={DEFAULT_SPEED}
+          sendMessage={socketRef?.current?.send}
+        />
       )}
     </View>
   );
@@ -109,10 +125,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 30,
-  },
-  text: {
-    textAlign: 'center',
-    marginTop: 20,
-    color: 'white',
   },
 });

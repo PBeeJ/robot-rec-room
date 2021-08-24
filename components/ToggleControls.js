@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, Pressable} from 'react-native';
+import {StyleSheet, Button, View} from 'react-native';
 
 export default function ToggleControls({zeroPoint, setZeroPoint, movement}) {
   const toggleControls = () => {
@@ -11,16 +11,23 @@ export default function ToggleControls({zeroPoint, setZeroPoint, movement}) {
   };
 
   return (
-    <Pressable onPress={toggleControls}>
-      <Text title="description" style={styles.container}>
-        {zeroPoint ? 'Stop Controls' : 'Start Controls'}
-      </Text>
-    </Pressable>
+    <View style={styles.container}>
+      <Button
+        onPress={toggleControls}
+        title={zeroPoint ? 'Stop Controls' : 'Start Controls'}
+        style={styles.button}
+        color={zeroPoint ? 'darkred' : 'green'}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    position: 'absolute',
+    top: 10,
+  },
+  button: {
     marginBottom: 5,
     padding: 5,
     backgroundColor: 'green',
