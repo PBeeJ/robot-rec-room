@@ -53,7 +53,8 @@ export default [
       {
         label: 'Movement speed',
         command: 'wsB',
-        description: 'this sets the move speed to N% - Anything under 25% does not seem to produce enough power to move anything',
+        description:
+          'this sets the move speed to N% - Anything under 25% does not seem to produce enough power to move anything',
         type: 'range',
         min: 0,
         max: 100,
