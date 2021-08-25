@@ -10,57 +10,56 @@ export default [
   //     },
   //   ],
   // },
-  // {
-  //   name: 'Controls',
-  //   set: [
-  //     {
-  //       label: 'left',
-  //       command: 'left',
-  //       description: 'turns the robot left',
-  //       cancelCommand: 'TS',
-  //     },
-  //     {
-  //       label: 'right',
-  //       command: 'right',
-  //       description: 'turns the robot right',
-  //       cancelCommand: 'TS',
-  //     },
-  //     {
-  //       label: 'Stop turning',
-  //       command: 'TS',
-  //       description: 'this stops the robot from turning',
-  //       variant: 'stop',
-  //     },
-
-  //     {
-  //       label: 'forward',
-  //       command: 'forward',
-  //       description: 'robot goes forward',
-  //       cancelCommand: 'DS',
-  //     },
-  //     {
-  //       label: 'backward',
-  //       command: 'backward',
-  //       description: 'robot goes backward',
-  //       cancelCommand: 'DS',
-  //     },
-  //     {
-  //       label: 'Stop moving',
-  //       command: 'DS',
-  //       description: 'this stops the robot from moving',
-  //       variant: 'stop',
-  //     },
-  //     {
-  //       label: 'Movement speed',
-  //       command: 'wsB',
-  //       description:
-  //         'this sets the move speed to N% - Anything under 25% does not seem to produce enough power to move anything',
-  //       type: 'range',
-  //       min: 0,
-  //       max: 100,
-  //     },
-  //   ],
-  // },
+  {
+    name: 'Controls',
+    set: [
+      {
+        label: 'left',
+        command: 'left',
+        description: 'turns the robot left',
+        cancelCommand: 'TS',
+      },
+      {
+        label: 'right',
+        command: 'right',
+        description: 'turns the robot right',
+        cancelCommand: 'TS',
+      },
+      // {
+      //   label: 'Stop turning',
+      //   command: 'TS',
+      //   description: 'this stops the robot from turning',
+      //   variant: 'stop',
+      // },
+      {
+        label: 'forward',
+        command: 'forward',
+        description: 'robot goes forward',
+        cancelCommand: 'DS',
+      },
+      {
+        label: 'backward',
+        command: 'backward',
+        description: 'robot goes backward',
+        cancelCommand: 'DS',
+      },
+      // {
+      //   label: 'Stop moving',
+      //   command: 'DS',
+      //   description: 'this stops the robot from moving',
+      //   variant: 'stop',
+      // },
+      {
+        label: 'Movement speed',
+        command: 'wsB',
+        description:
+          'this sets the move speed to N% - Anything under 25% does not seem to produce enough power to move anything',
+        type: 'range',
+        min: 0,
+        max: 100,
+      },
+    ],
+  },
   {
     name: 'Claw',
     set: [

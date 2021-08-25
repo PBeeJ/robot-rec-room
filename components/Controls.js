@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text} from 'react-native';
-import Information from './Information.js';
+// import Information from './Information.js';
 import ButtonSet from './ButtonSet.js';
 import Arrows from './Arrows.js';
 import ArrowData from './ArrowData.js';
@@ -12,7 +12,7 @@ export default function Controls({
   movement,
   zeroPoint,
   arrows,
-  information,
+  // information,
   defaultSpeed,
   sendMessage,
   sendJsonMessage,
@@ -33,15 +33,17 @@ export default function Controls({
         movement={movement}
         zeroPoint={zeroPoint}
       />
-      {<Arrows arrows={arrows} zeroPoint={zeroPoint} />}
-      {<ArrowData movement={movement} zeroPoint={zeroPoint} />}
-      <Information data={information} />
+      {/* <Information data={information} /> */}
       <ButtonSet
         buttons={buttons}
         sendMessage={sendMessage}
         sendJsonMessage={sendJsonMessage}
-        defaultSpeed={defaultSpeed}
-      />
+        defaultSpeed={defaultSpeed}>
+        <>
+          <Arrows arrows={arrows} zeroPoint={zeroPoint} />
+          <ArrowData movement={movement} zeroPoint={zeroPoint} />
+        </>
+      </ButtonSet>
     </>
   );
 }

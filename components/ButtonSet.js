@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, Button as RNButton, View} from 'react-native';
 
-const Button = ({label, command, description, runCommand, cancelCommand}) => (
+const Button = ({label, command, runCommand, cancelCommand2}) => (
   <View style={styles.button}>
     <RNButton
       title={label}
@@ -16,6 +16,7 @@ export default function ButtonSet({
   buttons,
   sendMessage,
   sendJsonMessage,
+  children,
 }) {
   const [speed] = useState(defaultSpeed);
 
@@ -56,6 +57,7 @@ export default function ButtonSet({
           </View>
         );
       })}
+      <>{children}</>
     </View>
   );
 }
@@ -63,9 +65,10 @@ export default function ButtonSet({
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
+    flexDirection: 'row',
     flexWrap: 'wrap',
     right: 0,
-    top: 0,
+    left: 0,
     bottom: 0,
     padding: 10,
   },
