@@ -14,7 +14,7 @@ const DEFAULT_VALUES = {x: 0, y: 0, z: 0};
 const isOnline = OFFLINE_MODE !== 'true';
 const TOLERANCE = {x: 2, y: 1.5, z: 1.5};
 const WEBSOCKET_URL = '192.168.1.10:8888';
-const DEFAULT_SPEED = 25; // percentage (0 to 100)
+const DEFAULT_SPEED = 30; // percentage (0 to 100)
 const INFO_UPDATE_SPEED = 10000; // fetch info every 10 seconds
 
 LogBox.ignoreLogs(['NativeEventEmitter']); // Ignore NativeEventEmitter warnings
@@ -43,7 +43,6 @@ export default function App() {
   };
 
   const handleOpen = () => {
-    console.log('handleOpen');
     socketRef.current?.send('admin:123456'); // Authorize the connection
     socketRef.current?.send(`wsB ${DEFAULT_SPEED}`); // Set the default movement speed
     setIsLoading(false);
@@ -66,6 +65,14 @@ export default function App() {
       convertMovement('z', 'forward', 'backward');
     }
   }, [movement, zeroPoint]);
+
+  useEffect(() => {
+    // If we have arrows data and we are loaded
+    if (arrows && !isLoading) {
+      socketRef.current?.send(arrows.y ? arrows.y : 'TS');
+      socketRef.current?.send(arrows.z ? arrows.z : 'DS');
+    }
+  }, [arrows, isLoading]);
 
   useEffect(() => {
     // This is where we get the accelerometer data
