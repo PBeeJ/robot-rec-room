@@ -1,14 +1,18 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, Button as RNButton, View} from 'react-native';
+import {StyleSheet, Text, View, Pressable} from 'react-native';
 
-const Button = ({label, command, runCommand, cancelCommand2}) => (
-  <View style={styles.button}>
-    <RNButton
-      title={label}
-      onPressIn={() => runCommand(command)}
-      onPressOut={() => cancelCommand && runCommand(cancelCommand)}
-    />
-  </View>
+const Button = ({label, command, runCommand, cancelCommand}) => (
+  <Pressable
+    onPressIn={() => {
+      console.log('onPressIn');
+      runCommand(command);
+    }}
+    onPressOut={() => {
+      console.log('onPressIn');
+      cancelCommand && runCommand(cancelCommand);
+    }}>
+    <Text style={styles.button}>{label}</Text>
+  </Pressable>
 );
 
 export default function ButtonSet({
@@ -73,7 +77,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
+    backgroundColor: 'purple',
+    padding: 8,
     marginBottom: 5,
     marginLeft: 10,
+    borderRadius: 3,
+    color: 'white',
+    fontSize: 10,
   },
 });

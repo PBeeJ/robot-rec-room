@@ -43,6 +43,7 @@ export default function App() {
   };
 
   const handleOpen = () => {
+    console.log('handleOpen');
     socketRef.current?.send('admin:123456'); // Authorize the connection
     socketRef.current?.send(`wsB ${DEFAULT_SPEED}`); // Set the default movement speed
     setIsLoading(false);
