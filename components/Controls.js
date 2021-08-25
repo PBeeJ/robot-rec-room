@@ -40,8 +40,9 @@ export default function Controls({
         sendJsonMessage={sendJsonMessage}
         defaultSpeed={defaultSpeed}>
         <>
-          <Arrows arrows={arrows} zeroPoint={zeroPoint} />
-          <ArrowData movement={movement} zeroPoint={zeroPoint} />
+        <Arrows arrows={arrows} zeroPoint={zeroPoint} />
+        <GrowyArrows arrows={arrows} zeroPoint={zeroPoint} />
+        <ArrowData movement={movement} zeroPoint={zeroPoint} />
         </>
       </ButtonSet>
     </>

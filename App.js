@@ -24,6 +24,8 @@ export default function App() {
   const socketRef = useRef();
   const [information, setInformation] = useState(['0', '0', '0']);
   const [movement, setMovement] = useState(DEFAULT_VALUES);
+  const [arrowLengths, setArryLengths] = useState(DEFAULT_VALUES);
+  // Deprecated: These are actly arrow labels.
   const [arrows, setArrows] = useState(DEFAULT_VALUES);
   const [zeroPoint, setZeroPoint] = useState(null);
   const [isLoading, setIsLoading] = useState(isOnline && true); // Don't show loading when offline
@@ -49,15 +51,26 @@ export default function App() {
     setIsLoading(false);
   };
 
+  // We want our range to be -10, 10, regardless of choice of zeroPoint
+  function minusMovement(movement, zeroPoint) {
+    const diff = movement - zeroPoint;
+    if(diff < -10) {
+      return diff + 20;
+    } else if(diff > 10) {
+      return diff - 20;
+    }
+    return diff;
+  }
+
   useEffect(() => {
     function convertMovement(pos, a, b) {
-      if (movement[pos] - zeroPoint[pos] > TOLERANCE[pos]) {
+      const diff = minusMovement(movement[pos], zeroPoint[pos]);
+      if (Math.abs(diff) > TOLERANCE[pos]) {
         setArrows(m => ({...m, [pos]: a}));
-      } else if (movement[pos] - zeroPoint[pos] < -1 * TOLERANCE[pos]) {
-        setArrows(m => ({...m, [pos]: b}));
       } else {
         setArrows(m => ({...m, [pos]: null}));
       }
+      setArrowLengths(m => ({...m, [pos]: diff}))
     }
 
     if (zeroPoint) {
