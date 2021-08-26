@@ -1,3 +1,6 @@
+# Obviously evil files
+.I_am_evil
+
 # OSX
 #
 .DS_Store
