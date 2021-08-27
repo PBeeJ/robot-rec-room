@@ -8,13 +8,12 @@ import WS from 'react-native-websocket';
 import Loading from './components/Loading.js';
 import Controls from './components/Controls.js';
 
-import {OFFLINE_MODE} from '@env';
+import {OFFLINE_MODE, WEBSOCKET_URL, DEFAULT_SPEED} from '@env';
 
 const DEFAULT_VALUES = {x: 0, y: 0, z: 0};
 const isOnline = OFFLINE_MODE !== 'true';
 const TOLERANCE = {x: 2, y: 1.5, z: 1.5};
-const WEBSOCKET_URL = '192.168.1.10:8888';
-const DEFAULT_SPEED = 30; // percentage (0 to 100)
+
 const INFO_UPDATE_SPEED = 10000; // fetch info every 10 seconds
 
 LogBox.ignoreLogs(['NativeEventEmitter']); // Ignore NativeEventEmitter warnings
@@ -24,7 +23,8 @@ export default function App() {
   const socketRef = useRef();
   const [information, setInformation] = useState(['0', '0', '0']);
   const [movement, setMovement] = useState(DEFAULT_VALUES);
-  const [arrowLengths, setArryLengths] = useState(DEFAULT_VALUES);
+  const [arrowLengths, setArrowLengths] = useState(DEFAULT_VALUES);
+  console.log('arrowLengths: ', arrowLengths);
   // Deprecated: These are actly arrow labels.
   const [arrows, setArrows] = useState(DEFAULT_VALUES);
   const [zeroPoint, setZeroPoint] = useState(null);
@@ -53,9 +53,9 @@ export default function App() {
   // We want our range to be -10, 10, regardless of choice of zeroPoint
   function minusMovement(movement, zeroPoint) {
     const diff = movement - zeroPoint;
-    if(diff < -10) {
+    if (diff < -10) {
       return diff + 20;
-    } else if(diff > 10) {
+    } else if (diff > 10) {
       return diff - 20;
     }
     return diff;
@@ -69,7 +69,7 @@ export default function App() {
       } else {
         setArrows(m => ({...m, [pos]: null}));
       }
-      setArrowLengths(m => ({...m, [pos]: diff}))
+      setArrowLengths(m => ({...m, [pos]: diff}));
     }
 
     if (zeroPoint) {
