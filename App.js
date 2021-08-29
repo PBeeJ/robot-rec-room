@@ -24,7 +24,6 @@ export default function App() {
   const [information, setInformation] = useState(['0', '0', '0']);
   const [movement, setMovement] = useState(DEFAULT_VALUES);
   const [arrowLengths, setArrowLengths] = useState(DEFAULT_VALUES);
-  console.log('arrowLengths: ', arrowLengths);
   // Deprecated: These are actly arrow labels.
   const [arrows, setArrows] = useState(DEFAULT_VALUES);
   const [zeroPoint, setZeroPoint] = useState(null);
@@ -143,8 +142,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'darkturquoise',
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: 30,
   },
 });

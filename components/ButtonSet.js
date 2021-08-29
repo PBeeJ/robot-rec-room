@@ -19,18 +19,19 @@ export default function ButtonSet({
   defaultSpeed,
   buttons,
   sendMessage,
-  sendJsonMessage,
+  // sendJsonMessage,
   children,
 }) {
   const [speed] = useState(defaultSpeed);
 
   function runCommand(command) {
-    if (typeof command === 'string') {
+    if (typeof command === 'string' && typeof sendMessage === 'function') {
       sendMessage(command);
     }
-    if (typeof command === 'object') {
-      sendJsonMessage(command);
-    }
+    // NOTE: We don't use this quite yet
+    // if (typeof command === 'object' && typeof sendJsonMessage === 'function') {
+    //   sendJsonMessage(command);
+    // }
   }
 
   return (
