@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 
 import Button from './Button';
@@ -6,9 +6,40 @@ import Button from './Button';
 import {BUTTON_SIZE as SIZE} from '@env';
 const BUTTON_SIZE = parseInt(SIZE, 10);
 
-export default function ButtonPad({sendMessage}) {
+export default function RobotPad({sendMessage}) {
+  const containerWidth = styles.draggable.left * -1;
+  const [dragPosition, setDragPosition] = useState(containerWidth + 80);
+
+  function handleStart(e) {
+    return true;
+  }
+
+  function handleMove({nativeEvent}) {
+    const {pageX} = nativeEvent;
+    const position = Math.round(pageX - containerWidth + 12);
+    setDragPosition(position);
+    return true;
+  }
+
+  function handleEnd({nativeEvent}) {
+    if (dragPosition < containerWidth / 2 + 60) {
+      setDragPosition(0);
+    } else {
+      setDragPosition(containerWidth + 80);
+    }
+  }
+
+  const right = dragPosition
+    ? styles.container.right - dragPosition
+    : styles.container.right;
+
   return (
-    <View style={styles.container}>
+    <View
+      style={{...styles.container, right}}
+      onStartShouldSetResponder={handleStart}
+      onResponderMove={handleMove}
+      onResponderRelease={handleEnd}>
+      <View style={{...styles.control, ...styles.draggable}} />
       <Button
         sendMessage={sendMessage}
         command="grab"
@@ -71,6 +102,11 @@ const styles = StyleSheet.create({
     width: BUTTON_SIZE,
     height: BUTTON_SIZE,
     borderRadius: BUTTON_SIZE / 2,
+  },
+  draggable: {
+    top: BUTTON_SIZE * 3.5,
+    left: BUTTON_SIZE * -6.6,
+    backgroundColor: 'rgba(255,255,255,0.45)',
   },
   grab: {
     top: BUTTON_SIZE * 3.5,
