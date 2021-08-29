@@ -98,26 +98,26 @@ const styles = StyleSheet.create({
   },
   grab: {
     top: BUTTON_SIZE * 3.5,
-    left: BUTTON_SIZE * -1,
+    left: BUTTON_SIZE * 1.7,
   },
   loose: {
     top: BUTTON_SIZE * 3.5,
-    left: BUTTON_SIZE * 0.3,
+    left: BUTTON_SIZE * 0.5,
   },
   lookleft: {
-    top: BUTTON_SIZE * 4.8,
-    left: BUTTON_SIZE * -1,
+    top: BUTTON_SIZE * 3.5,
+    left: BUTTON_SIZE * -2.2,
   },
   lookright: {
-    top: BUTTON_SIZE * 4.8,
-    left: BUTTON_SIZE * 0.3,
+    top: BUTTON_SIZE * 3.5,
+    left: BUTTON_SIZE * -1,
   },
   cameraUp: {
     top: BUTTON_SIZE * 3.5,
-    left: BUTTON_SIZE * 2,
+    left: BUTTON_SIZE * -5,
   },
   cameraDown: {
-    top: BUTTON_SIZE * 4.8,
-    left: BUTTON_SIZE * 2,
+    top: BUTTON_SIZE * 3.5,
+    left: BUTTON_SIZE * -3.8,
   },
 });

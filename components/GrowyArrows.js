@@ -8,7 +8,7 @@ function Arrow({arrow}) {
   return <Icon name={arrow} size={60} color="#900" />;
 }
 
-export default function Arrows({arrows, zeroPoint}) {
+export default function GrowyArrows({arrows, zeroPoint}) {
   if (!zeroPoint) {
     return null;
   }
@@ -35,7 +35,9 @@ export default function Arrows({arrows, zeroPoint}) {
         <View style={styles.leftRightArrows}>
           <Arrow
             arrow={
-              arrows?.z === 'forward' ? 'arrow-up-thick' : 'arrow-up-bold-outline'
+              arrows?.z === 'forward'
+                ? 'arrow-up-thick'
+                : 'arrow-up-bold-outline'
             }
           />
           <Arrow
@@ -64,7 +66,7 @@ export default function Arrows({arrows, zeroPoint}) {
             }
           />
         </View>
-      </View>     
+      </View>
     </View>
   );
 }

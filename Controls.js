@@ -3,7 +3,6 @@ import React, {useRef, useEffect, useState} from 'react';
 import Information from './components/Information.js';
 import ButtonSet from './components/ButtonSet.js';
 import Arrows from './components/Arrows.js';
-import ArrowData from './components/ArrowData.js';
 import ToggleControls from './components/ToggleControls.js';
 import buttons from './buttons.js';
 
@@ -97,8 +96,7 @@ export default function Controls({
         movement={movement}
         zeroPoint={zeroPoint}
       />
-      {<Arrows arrows={arrows} zeroPoint={zeroPoint} />}
-      {<ArrowData movement={movement} zeroPoint={zeroPoint} />}
+      <Arrows arrows={arrows} zeroPoint={zeroPoint} />
       <Information data={information} />
       <ButtonSet
         buttons={buttons}

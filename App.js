@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {accelerometer} from 'react-native-sensors';
+import {Pressable, StyleSheet} from 'react-native';
+// import {accelerometer} from 'react-native-sensors';
 import {setUpdateIntervalForType, SensorTypes} from 'react-native-sensors';
 import {LogBox} from 'react-native';
 import WS from 'react-native-websocket';
@@ -10,9 +10,9 @@ import Controls from './components/Controls.js';
 
 import {OFFLINE_MODE, WEBSOCKET_URL, DEFAULT_SPEED} from '@env';
 
-const DEFAULT_VALUES = {x: 0, y: 0, z: 0};
+// const DEFAULT_VALUES = {x: 0, y: 0, z: 0};
+// const TOLERANCE = {x: 2, y: 1.5, z: 1.5};
 const isOnline = OFFLINE_MODE !== 'true';
-const TOLERANCE = {x: 2, y: 1.5, z: 1.5};
 
 const INFO_UPDATE_SPEED = 10000; // fetch info every 10 seconds
 
@@ -21,15 +21,15 @@ setUpdateIntervalForType(SensorTypes.accelerometer, 200); // Limit interval to 5
 
 export default function App() {
   const socketRef = useRef();
-  const [information, setInformation] = useState(['0', '0', '0']);
-  const [movement, setMovement] = useState(DEFAULT_VALUES);
-  const [arrowLengths, setArrowLengths] = useState(DEFAULT_VALUES);
-  // Deprecated: These are actly arrow labels.
-  const [arrows, setArrows] = useState(DEFAULT_VALUES);
-  const [zeroPoint, setZeroPoint] = useState(null);
+  const [information, setInformation] = useState(null);
+  // const [movement, setMovement] = useState(DEFAULT_VALUES);
+  // const [arrowLengths, setArrowLengths] = useState(DEFAULT_VALUES);
+  // // Deprecated: These are actly arrow labels.
+  // const [arrows, setArrows] = useState(DEFAULT_VALUES);
+  // const [zeroPoint, setZeroPoint] = useState(null);
   const [isLoading, setIsLoading] = useState(isOnline && true); // Don't show loading when offline
 
-  const handleMessage = ({data}) => {
+  function handleMessage({data}) {
     // Don't parse the string if it contains the initial congratulation message
     if (typeof data === 'string' && !data.includes('congratulation')) {
       try {
@@ -41,60 +41,68 @@ export default function App() {
         console.log(e);
       }
     }
-  };
+  }
 
-  const handleOpen = () => {
+  function handleOpen() {
     socketRef.current?.send('admin:123456'); // Authorize the connection
     socketRef.current?.send(`wsB ${DEFAULT_SPEED}`); // Set the default movement speed
     setIsLoading(false);
-  };
-
-  // We want our range to be -10, 10, regardless of choice of zeroPoint
-  function minusMovement(movement, zeroPoint) {
-    const diff = movement - zeroPoint;
-    if (diff < -10) {
-      return diff + 20;
-    } else if (diff > 10) {
-      return diff - 20;
-    }
-    return diff;
   }
 
-  useEffect(() => {
-    function convertMovement(pos, a, b) {
-      const diff = minusMovement(movement[pos], zeroPoint[pos]);
-      if (Math.abs(diff) > TOLERANCE[pos]) {
-        setArrows(m => ({...m, [pos]: a}));
-      } else {
-        setArrows(m => ({...m, [pos]: null}));
-      }
-      setArrowLengths(m => ({...m, [pos]: diff}));
-    }
+  // // We want our range to be -10, 10, regardless of choice of zeroPoint
+  // function minusMovement(amount, original) {
+  //   const diff = original - amount;
+  //   if (diff < -10) {
+  //     return diff + 20;
+  //   } else if (diff > 10) {
+  //     return diff - 20;
+  //   }
+  //   return diff;
+  // }
 
-    if (zeroPoint) {
-      convertMovement('x', 'forward', 'backward');
-      convertMovement('y', 'right', 'left');
-      convertMovement('z', 'forward', 'backward');
-    }
-  }, [movement, zeroPoint]);
+  // function handlePressIn() {
+  //   setZeroPoint(movement);
+  // }
 
-  useEffect(() => {
-    // If we have arrows data and we are loaded
-    if (arrows && !isLoading) {
-      socketRef.current?.send(arrows.y ? arrows.y : 'TS');
-      socketRef.current?.send(arrows.z ? arrows.z : 'DS');
-    }
-  }, [arrows, isLoading]);
+  // function handlePressOut() {
+  //   setZeroPoint(null);
+  // }
 
-  useEffect(() => {
-    // This is where we get the accelerometer data
-    const subscription = accelerometer.subscribe(({x, y, z}) =>
-      setMovement({x, y, z}),
-    );
+  // useEffect(() => {
+  //   function convertMovement(pos, a, b) {
+  //     const diff = minusMovement(movement[pos], zeroPoint[pos]);
+  //     if (Math.abs(diff) > TOLERANCE[pos]) {
+  //       setArrows(m => ({...m, [pos]: a}));
+  //     } else {
+  //       setArrows(m => ({...m, [pos]: null}));
+  //     }
+  //     setArrowLengths(m => ({...m, [pos]: diff}));
+  //   }
 
-    // Unsubscribe on component unmount
-    return () => subscription.unsubscribe();
-  }, []);
+  //   if (zeroPoint) {
+  //     convertMovement('x', 'forward', 'backward');
+  //     convertMovement('y', 'right', 'left');
+  //     convertMovement('z', 'forward', 'backward');
+  //   }
+  // }, [movement, zeroPoint]);
+
+  // useEffect(() => {
+  //   // If we have arrows data and we are loaded
+  //   if (arrows && !isLoading) {
+  //     socketRef.current?.send(arrows.y ? arrows.y : 'TS');
+  //     socketRef.current?.send(arrows.z ? arrows.z : 'DS');
+  //   }
+  // }, [arrows, isLoading]);
+
+  // useEffect(() => {
+  //   // This is where we get the accelerometer data
+  //   const subscription = accelerometer.subscribe(({x, y, z}) =>
+  //     setMovement({x, y, z}),
+  //   );
+
+  //   // Unsubscribe on component unmount
+  //   return () => subscription.unsubscribe();
+  // }, []);
 
   useEffect(() => {
     let timer;
@@ -109,7 +117,11 @@ export default function App() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <Pressable
+      style={styles.container}
+      // onPressIn={handlePressIn}
+      // onPressOut={handlePressOut}
+    >
       {isOnline && (
         <WS
           ref={socketRef}
@@ -125,16 +137,15 @@ export default function App() {
         <Loading message={`Connecting to ${WEBSOCKET_URL}`} />
       ) : (
         <Controls
-          setZeroPoint={setZeroPoint}
-          movement={movement}
-          zeroPoint={zeroPoint}
-          arrows={arrows}
+          // movement={movement}
+          // zeroPoint={zeroPoint}
+          // arrows={arrows}
           information={information}
           defaultSpeed={DEFAULT_SPEED}
           sendMessage={socketRef?.current?.send}
         />
       )}
-    </View>
+    </Pressable>
   );
 }
 

@@ -1,40 +1,28 @@
 import React from 'react';
-import ButtonSet from './ButtonSet.js';
-import Arrows from './Arrows.js';
-import ArrowData from './ArrowData.js';
-// import ToggleControls from './ToggleControls.js';
-import GrowyArrows from './GrowyArrows.js';
-import buttons from '../buttons.js';
+// import Arrows from './Arrows.js';
 import GamePad from './GamePad.js';
 import ButtonPad from './ButtonPad.js';
+import GameInfo from './GameInfo.js';
 
 export default function Controls({
-  setZeroPoint,
+  information,
   movement,
   zeroPoint,
-  arrows,
+  // arrows,
   defaultSpeed,
   sendMessage,
-  sendJsonMessage,
 }) {
   return (
     <>
-      <GamePad />
-      <ButtonPad />
-      {/* <ToggleControls
-        setZeroPoint={setZeroPoint}
+      <GamePad sendMessage={sendMessage} />
+      <ButtonPad sendMessage={sendMessage} />
+      {/* <Arrows arrows={arrows} zeroPoint={zeroPoint} /> */}
+      <GameInfo
         movement={movement}
         zeroPoint={zeroPoint}
-      /> */}
-      {/* <ButtonSet
-        buttons={buttons}
-        sendMessage={sendMessage}
-        sendJsonMessage={sendJsonMessage}
-        defaultSpeed={defaultSpeed}
-      /> */}
-      <Arrows arrows={arrows} zeroPoint={zeroPoint} />
-      <GrowyArrows arrows={arrows} zeroPoint={zeroPoint} />
-      <ArrowData movement={movement} zeroPoint={zeroPoint} />
+        speed={defaultSpeed}
+        information={information}
+      />
     </>
   );
 }

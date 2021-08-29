@@ -7,7 +7,7 @@ export default function ArrowData({movement, zeroPoint}) {
   }
 
   function DataItem({pos}) {
-    const value = zeroPoint ? Math.round(movement[pos] - zeroPoint[pos]) : 0;
+    const value = zeroPoint ? Math.round(zeroPoint[pos] - movement[pos]) : 0;
     const rawValue = movement[pos]?.toFixed(1);
 
     return <Text>{`${pos}: ${value} / ${rawValue}`}</Text>;
