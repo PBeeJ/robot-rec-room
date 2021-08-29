@@ -1,18 +1,25 @@
 import React from 'react';
 import {Pressable} from 'react-native';
 
-function handlePress() {}
+import {BUTTON_SIZE} from '@env';
 
-export default function Button({radius, color, style}) {
+export default function Button({
+  sendMessage,
+  command,
+  cancelCommand,
+  color,
+  style,
+}) {
   return (
     <Pressable
       android_ripple={{
         color,
         borderless: true,
-        radius,
+        radius: BUTTON_SIZE / 1.7,
       }}
       style={style}
-      onPress={handlePress}
+      onPressIn={() => sendMessage(command)}
+      onPressOut={() => sendMessage(cancelCommand)}
     />
   );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-// import Arrows from './Arrows.js';
+import ArmPad from './ArmPad.js';
 import GamePad from './GamePad.js';
 import ButtonPad from './ButtonPad.js';
 import GameInfo from './GameInfo.js';
@@ -7,8 +7,7 @@ import GameInfo from './GameInfo.js';
 export default function Controls({
   information,
   movement,
-  zeroPoint,
-  // arrows,
+  lastCommand,
   defaultSpeed,
   sendMessage,
 }) {
@@ -16,10 +15,11 @@ export default function Controls({
     <>
       <GamePad sendMessage={sendMessage} />
       <ButtonPad sendMessage={sendMessage} />
+      <ArmPad sendMessage={sendMessage} />
       {/* <Arrows arrows={arrows} zeroPoint={zeroPoint} /> */}
       <GameInfo
+        lastCommand={lastCommand}
         movement={movement}
-        zeroPoint={zeroPoint}
         speed={defaultSpeed}
         information={information}
       />

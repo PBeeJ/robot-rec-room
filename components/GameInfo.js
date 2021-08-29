@@ -7,10 +7,9 @@ function Item({name}) {
   return <Text style={styles.text}>{name}</Text>;
 }
 
-export default function Information({movement, zeroPoint, speed, information}) {
-  function getValue(axis) {
-    const value = zeroPoint[axis] - movement[axis];
-    return value.toFixed(0);
+export default function GameInfo({lastCommand, movement, speed, information}) {
+  function formatValue(value) {
+    return value.toFixed(2);
   }
 
   return (
@@ -38,29 +37,17 @@ export default function Information({movement, zeroPoint, speed, information}) {
         <View style={styles.wrapper}>
           <Text style={styles.title}>Movement</Text>
           <View style={styles.column}>
-            <Item name={`x: ${movement.x.toFixed(0)}`} />
-            <Item name={`y: ${movement.y.toFixed(0)}`} />
-            <Item name={`z: ${movement.z.toFixed(0)}`} />
+            <Item name={`x: ${formatValue(movement.x)}`} />
+            <Item name={`y: ${formatValue(movement.y)}`} />
+            <Item name={`z: ${formatValue(movement.z)}`} />
           </View>
         </View>
       )}
-      {zeroPoint && (
+      {lastCommand && (
         <View style={styles.wrapper}>
-          <Text style={styles.title}>Zero</Text>
+          <Text style={styles.title}>Last</Text>
           <View style={styles.column}>
-            <Item name={`x: ${zeroPoint.x.toFixed(0)}`} />
-            <Item name={`y: ${zeroPoint.y.toFixed(0)}`} />
-            <Item name={`z: ${zeroPoint.z.toFixed(0)}`} />
-          </View>
-        </View>
-      )}
-      {zeroPoint && (
-        <View style={styles.wrapper}>
-          <Text style={styles.title}>Value</Text>
-          <View style={styles.column}>
-            <Item name={`x: ${getValue('x')}`} />
-            <Item name={`y: ${getValue('y')}`} />
-            <Item name={`z: ${getValue('z')}`} />
+            <Item name={`command: ${lastCommand}`} />
           </View>
         </View>
       )}

@@ -6,58 +6,50 @@ import Button from './Button';
 import {BUTTON_SIZE as SIZE} from '@env';
 const BUTTON_SIZE = parseInt(SIZE, 10);
 
-export default function ButtonPad() {
+export default function ButtonPad({sendMessage}) {
   return (
     <View style={styles.container}>
       <Button
+        sendMessage={sendMessage}
+        command="grab"
+        cancelCommand="stop"
         color="green"
-        radius={BUTTON_SIZE / 1.7}
         style={{...styles.control, ...styles.grab}}
       />
       <Button
+        sendMessage={sendMessage}
+        command="loose"
+        cancelCommand="stop"
         color="green"
-        radius={BUTTON_SIZE / 1.7}
         style={{...styles.control, ...styles.loose}}
       />
       <Button
-        color="red"
-        radius={BUTTON_SIZE / 1.7}
-        style={{...styles.control, ...styles.handUp}}
-      />
-      <Button
-        color="red"
-        radius={BUTTON_SIZE / 1.7}
-        style={{...styles.control, ...styles.handDown}}
-      />
-      <Button
-        color="blue"
-        radius={BUTTON_SIZE / 1.7}
-        style={{...styles.control, ...styles.armUp}}
-      />
-      <Button
-        color="blue"
-        radius={BUTTON_SIZE / 1.7}
-        style={{...styles.control, ...styles.armDown}}
-      />
-      <Button
+        sendMessage={sendMessage}
+        command="lookleft"
+        cancelCommand="LRstop"
         color="orange"
-        radius={BUTTON_SIZE / 1.7}
         style={{...styles.control, ...styles.lookleft}}
       />
       <Button
+        sendMessage={sendMessage}
+        command="lookright"
+        cancelCommand="LRstop"
         color="orange"
-        radius={BUTTON_SIZE / 1.7}
         style={{...styles.control, ...styles.lookright}}
       />
       <Button
+        sendMessage={sendMessage}
+        command="up"
+        cancelCommand="UDstop"
         color="purple"
-        radius={BUTTON_SIZE / 1.7}
-        style={{...styles.control, ...styles.cameraUp}}
+        style={{...styles.control, ...styles.up}}
       />
       <Button
+        sendMessage={sendMessage}
+        command="down"
+        cancelCommand="UDstop"
         color="purple"
-        radius={BUTTON_SIZE / 1.7}
-        style={{...styles.control, ...styles.cameraDown}}
+        style={{...styles.control, ...styles.down}}
       />
     </View>
   );
@@ -80,22 +72,6 @@ const styles = StyleSheet.create({
     height: BUTTON_SIZE,
     borderRadius: BUTTON_SIZE / 2,
   },
-  armUp: {
-    top: BUTTON_SIZE,
-    left: 0,
-  },
-  armDown: {
-    top: BUTTON_SIZE,
-    left: BUTTON_SIZE * 2,
-  },
-  handUp: {
-    top: 0,
-    left: BUTTON_SIZE,
-  },
-  handDown: {
-    top: BUTTON_SIZE * 2,
-    left: BUTTON_SIZE,
-  },
   grab: {
     top: BUTTON_SIZE * 3.5,
     left: BUTTON_SIZE * 1.7,
@@ -112,11 +88,11 @@ const styles = StyleSheet.create({
     top: BUTTON_SIZE * 3.5,
     left: BUTTON_SIZE * -1,
   },
-  cameraUp: {
+  up: {
     top: BUTTON_SIZE * 3.5,
     left: BUTTON_SIZE * -5,
   },
-  cameraDown: {
+  down: {
     top: BUTTON_SIZE * 3.5,
     left: BUTTON_SIZE * -3.8,
   },
