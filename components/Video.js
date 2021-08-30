@@ -13,6 +13,7 @@ export default function Video({url, width, height}) {
 
   return (
     <WebView
+      pointerEvents="none"
       style={styles.container}
       automaticallyAdjustContentInsets={true}
       scalesPageToFit={true}

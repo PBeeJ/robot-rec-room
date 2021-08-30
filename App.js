@@ -44,6 +44,7 @@ export default function App() {
   function handleMessage({data}) {
     // Don't parse the string if it contains the initial congratulation message
     if (typeof data === 'string' && !data.includes('congratulation')) {
+      setIsLoading(false);
       try {
         const message = JSON.parse(data);
         if (message.title === 'get_info') {
@@ -59,7 +60,6 @@ export default function App() {
     socketRef.current?.send('admin:123456'); // Authorize the connection
     socketRef.current?.send(`wsB ${DEFAULT_SPEED}`); // Set the default movement speed
     setLastCommand(`wsB ${DEFAULT_SPEED}`);
-    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -85,11 +85,7 @@ export default function App() {
   }, []);
 
   return (
-    <Pressable
-      style={styles.container}
-      // onPressIn={handlePressIn}
-      // onPressOut={handlePressOut}
-    >
+    <Pressable style={styles.container}>
       {isOnline && (
         <WS
           ref={socketRef}

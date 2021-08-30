@@ -32,7 +32,9 @@ export default function Controls({
         speed={movementSpeed}
         information={information}
       />
-      <Video url={`http://${CAMERA_URL}/video_feed`} width={200} height={100} />
+      {/* <View pointerEvents="none">
+        <Video url={`http://${CAMERA_URL}/video_feed`} />
+      </View> */}
     </>
   );
 }
