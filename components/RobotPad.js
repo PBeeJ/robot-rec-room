@@ -1,33 +1,59 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-
+import {StyleSheet, View, Text} from 'react-native';
 import Button from './Button';
+import {
+  Sliders,
+  ArrowUp,
+  ArrowDown,
+  RotateCcw,
+  RotateCw,
+  Plus,
+  Minus,
+} from 'react-native-feather';
 
 import {BUTTON_SIZE as SIZE} from '@env';
 const BUTTON_SIZE = parseInt(SIZE, 10);
 
 export default function RobotPad({sendMessage}) {
   const containerWidth = styles.draggable.left * -1;
-  const [dragPosition, setDragPosition] = useState(containerWidth + 80);
+  const [dragPosition, setDragPosition] = useState(containerWidth + 95);
+  const [start, setStart] = useState(null);
 
-  function handleStart(e) {
+  function handleStart({nativeEvent}) {
+    const {pageX} = nativeEvent;
+    setStart(pageX);
     return true;
   }
 
   function handleMove({nativeEvent}) {
     const {pageX} = nativeEvent;
-    const position = Math.round(pageX - containerWidth + 12);
+    const position = Math.round(pageX - containerWidth);
     setDragPosition(position);
     return true;
   }
 
   function handleEnd({nativeEvent}) {
-    if (dragPosition < containerWidth / 2 + 60) {
-      setDragPosition(0);
+    const {pageX} = nativeEvent;
+    const distanceDragged = Math.abs(start - pageX);
+
+    if (distanceDragged < 10) {
+      // Tap detected
+      if (dragPosition < 10) {
+        setDragPosition(containerWidth + 95);
+      } else {
+        setDragPosition(0);
+      }
     } else {
-      setDragPosition(containerWidth + 80);
+      // Drag detected
+      if (dragPosition < containerWidth / 2 + 60) {
+        setDragPosition(0);
+      } else {
+        setDragPosition(containerWidth + 95);
+      }
     }
   }
+
+  // TODO: read through the code and add comments where things are unclear
 
   const right = dragPosition
     ? styles.container.right - dragPosition
@@ -39,47 +65,62 @@ export default function RobotPad({sendMessage}) {
       onStartShouldSetResponder={handleStart}
       onResponderMove={handleMove}
       onResponderRelease={handleEnd}>
-      <View style={{...styles.control, ...styles.draggable}} />
+      <View style={{...styles.control, ...styles.draggable}}>
+        <Sliders stroke="white" width={30} height={30} />
+        <Text style={styles.text}>controls</Text>
+      </View>
       <Button
+        icon={Plus}
+        iconSize={24}
+        label="claw"
         sendMessage={sendMessage}
         command="grab"
         cancelCommand="stop"
-        color="green"
         style={{...styles.control, ...styles.grab}}
       />
       <Button
+        icon={Minus}
+        iconSize={24}
+        label="claw"
         sendMessage={sendMessage}
         command="loose"
         cancelCommand="stop"
-        color="green"
         style={{...styles.control, ...styles.loose}}
       />
       <Button
+        icon={RotateCcw}
+        iconSize={24}
+        label="claw"
         sendMessage={sendMessage}
         command="lookleft"
         cancelCommand="LRstop"
-        color="orange"
         style={{...styles.control, ...styles.lookleft}}
       />
       <Button
+        icon={RotateCw}
+        iconSize={24}
+        label="claw"
         sendMessage={sendMessage}
         command="lookright"
         cancelCommand="LRstop"
-        color="orange"
         style={{...styles.control, ...styles.lookright}}
       />
       <Button
+        icon={ArrowUp}
+        iconSize={24}
+        label="camera"
         sendMessage={sendMessage}
         command="up"
         cancelCommand="UDstop"
-        color="purple"
         style={{...styles.control, ...styles.up}}
       />
       <Button
+        icon={ArrowDown}
+        iconSize={24}
+        label="camera"
         sendMessage={sendMessage}
         command="down"
         cancelCommand="UDstop"
-        color="purple"
         style={{...styles.control, ...styles.down}}
       />
     </View>
@@ -89,11 +130,12 @@ export default function RobotPad({sendMessage}) {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 30,
-    right: 30,
+    top: 20,
+    right: 20,
     padding: 10,
     width: BUTTON_SIZE * 3,
     height: BUTTON_SIZE * 3,
+    zIndex: 1,
   },
   control: {
     position: 'absolute',
@@ -102,11 +144,13 @@ const styles = StyleSheet.create({
     width: BUTTON_SIZE,
     height: BUTTON_SIZE,
     borderRadius: BUTTON_SIZE / 2,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   draggable: {
     top: BUTTON_SIZE * 3.5,
     left: BUTTON_SIZE * -6.6,
-    backgroundColor: 'rgba(255,255,255,0.45)',
+    backgroundColor: 'rgba(255,255,255,0.25)',
   },
   grab: {
     top: BUTTON_SIZE * 3.5,
@@ -131,5 +175,14 @@ const styles = StyleSheet.create({
   down: {
     top: BUTTON_SIZE * 3.5,
     left: BUTTON_SIZE * -3.8,
+  },
+  text: {
+    textTransform: 'capitalize',
+    fontWeight: '700',
+    fontSize: 8,
+    lineHeight: 8,
+    position: 'absolute',
+    bottom: -15,
+    color: 'white',
   },
 });

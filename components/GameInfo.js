@@ -14,7 +14,7 @@ export default function GameInfo({lastCommand, movement, speed, information}) {
 
   return (
     <View style={styles.container}>
-      {speed && (
+      {!isNaN(speed) && (
         <View style={styles.wrapper}>
           <Text style={styles.title}>Config</Text>
           <View style={styles.column}>
@@ -45,9 +45,9 @@ export default function GameInfo({lastCommand, movement, speed, information}) {
       )}
       {lastCommand && (
         <View style={styles.wrapper}>
-          <Text style={styles.title}>Last</Text>
+          <Text style={styles.title}>Last command</Text>
           <View style={styles.column}>
-            <Item name={`command: ${lastCommand}`} />
+            <Item name={lastCommand} />
           </View>
         </View>
       )}

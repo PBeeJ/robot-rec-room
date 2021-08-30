@@ -7,10 +7,8 @@ import WS from 'react-native-websocket';
 
 import Loading from './components/Loading.js';
 import Controls from './components/Controls.js';
-// import Video from './components/Video.js';
 
 import {
-  // CAMERA_URL,
   OFFLINE_MODE,
   WEBSOCKET_URL,
   DEFAULT_SPEED,
@@ -30,6 +28,9 @@ export default function App() {
   const socketRef = useRef();
   const [information, setInformation] = useState(null);
   const [movement, setMovement] = useState(null);
+  const [movementSpeed, setMovementSpeed] = useState(
+    parseInt(DEFAULT_SPEED, 10),
+  );
   const [lastCommand, setLastCommand] = useState(null);
   const [isLoading, setIsLoading] = useState(isOnline && true); // Don't show loading when offline
 
@@ -57,6 +58,7 @@ export default function App() {
   function handleOpen() {
     socketRef.current?.send('admin:123456'); // Authorize the connection
     socketRef.current?.send(`wsB ${DEFAULT_SPEED}`); // Set the default movement speed
+    setLastCommand(`wsB ${DEFAULT_SPEED}`);
     setIsLoading(false);
   }
 
@@ -102,16 +104,14 @@ export default function App() {
       {isLoading ? (
         <Loading message={`Connecting to ${WEBSOCKET_URL}`} />
       ) : (
-        <>
-          <Controls
-            movement={movement}
-            information={information}
-            lastCommand={lastCommand}
-            defaultSpeed={DEFAULT_SPEED}
-            sendMessage={sendMessage}
-          />
-          {/* <Video url={`http://${CAMERA_URL}/video`} width={200} height={100} /> */}
-        </>
+        <Controls
+          movement={movement}
+          information={information}
+          lastCommand={lastCommand}
+          movementSpeed={movementSpeed}
+          setMovementSpeed={setMovementSpeed}
+          sendMessage={sendMessage}
+        />
       )}
     </Pressable>
   );
@@ -120,7 +120,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'darkturquoise',
-    padding: 30,
+    backgroundColor: 'darkorange',
+    padding: 20,
   },
 });
