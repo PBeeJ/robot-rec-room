@@ -12,7 +12,7 @@ import Controls from './components/Controls.js';
 import {
   // CAMERA_URL,
   OFFLINE_MODE,
-  WEBSOCKET_URL,
+  WEBSOCKET_URL, // Ooh, look at me.
   DEFAULT_SPEED,
   SERVER_INFO_UPDATE_SPEED,
   ACELEROMETER_REFRESH,
