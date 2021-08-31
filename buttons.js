@@ -25,13 +25,12 @@ export default [
         description: 'turns the robot right',
         cancelCommand: 'TS',
       },
-      {
-        label: 'Stop turning',
-        command: 'TS',
-        description: 'this stops the robot from turning',
-        variant: 'stop',
-      },
-
+      // {
+      //   label: 'Stop turning',
+      //   command: 'TS',
+      //   description: 'this stops the robot from turning',
+      //   variant: 'stop',
+      // },
       {
         label: 'forward',
         command: 'forward',
@@ -44,12 +43,12 @@ export default [
         description: 'robot goes backward',
         cancelCommand: 'DS',
       },
-      {
-        label: 'Stop moving',
-        command: 'DS',
-        description: 'this stops the robot from moving',
-        variant: 'stop',
-      },
+      // {
+      //   label: 'Stop moving',
+      //   command: 'DS',
+      //   description: 'this stops the robot from moving',
+      //   variant: 'stop',
+      // },
       {
         label: 'Movement speed',
         command: 'wsB',
@@ -102,78 +101,78 @@ export default [
       },
     ],
   },
-  // {
-  //   name: 'Camera',
-  //   set: [
-  //     {
-  //       label: 'up',
-  //       command: 'up',
-  //       description: 'tilts the camera up',
-  //       cancelCommand: 'UDstop',
-  //     },
-  //     {
-  //       label: 'down',
-  //       command: 'down',
-  //       description: 'tilts the camera down',
-  //       cancelCommand: 'UDstop',
-  //     },
-  //   ],
-  //   stopControls: [
-  //     {
-  //       label: 'Stop camera tilting',
-  //       command: 'UDstop',
-  //       description: 'stops the camera from tilting',
-  //     },
-  //   ],
-  // },
-  // {
-  //   name: 'Arm',
-  //   set: [
-  //     {
-  //       label: 'armup',
-  //       command: 'armup',
-  //       description: 'moves the arm up',
-  //       cancelCommand: 'Armstop',
-  //     },
-  //     {
-  //       label: 'armdown',
-  //       command: 'armdown',
-  //       description: 'moves the arm down',
-  //       cancelCommand: 'Armstop',
-  //     },
-  //   ],
-  //   stopControls: [
-  //     {
-  //       label: 'Stop arm moving',
-  //       command: 'Armstop',
-  //       description: 'stops the arm from moving',
-  //     },
-  //   ],
-  // },
-  // {
-  //   name: 'Hand',
-  //   set: [
-  //     {
-  //       label: 'handup',
-  //       command: 'handup',
-  //       description: 'moves the hand up',
-  //       cancelCommand: 'HAstop',
-  //     },
-  //     {
-  //       label: 'handdown',
-  //       command: 'handdown',
-  //       description: 'moves the hand down',
-  //       cancelCommand: 'HAstop',
-  //     },
-  //   ],
-  //   stopControls: [
-  //     {
-  //       label: 'Stop hand moving',
-  //       command: 'HAstop',
-  //       description: 'stops the hand from moving',
-  //     },
-  //   ],
-  // },
+  {
+    name: 'Camera',
+    set: [
+      {
+        label: 'up',
+        command: 'up',
+        description: 'tilts the camera up',
+        cancelCommand: 'UDstop',
+      },
+      {
+        label: 'down',
+        command: 'down',
+        description: 'tilts the camera down',
+        cancelCommand: 'UDstop',
+      },
+    ],
+    stopControls: [
+      {
+        label: 'Stop camera tilting',
+        command: 'UDstop',
+        description: 'stops the camera from tilting',
+      },
+    ],
+  },
+  {
+    name: 'Arm',
+    set: [
+      {
+        label: 'armup',
+        command: 'armup',
+        description: 'moves the arm up',
+        cancelCommand: 'Armstop',
+      },
+      {
+        label: 'armdown',
+        command: 'armdown',
+        description: 'moves the arm down',
+        cancelCommand: 'Armstop',
+      },
+    ],
+    stopControls: [
+      {
+        label: 'Stop arm moving',
+        command: 'Armstop',
+        description: 'stops the arm from moving',
+      },
+    ],
+  },
+  {
+    name: 'Hand',
+    set: [
+      {
+        label: 'handup',
+        command: 'handup',
+        description: 'moves the hand up',
+        cancelCommand: 'HAstop',
+      },
+      {
+        label: 'handdown',
+        command: 'handdown',
+        description: 'moves the hand down',
+        cancelCommand: 'HAstop',
+      },
+    ],
+    stopControls: [
+      {
+        label: 'Stop hand moving',
+        command: 'HAstop',
+        description: 'stops the hand from moving',
+      },
+    ],
+  },
   // {
   //   name: 'Other',
   //   disabled: true,
