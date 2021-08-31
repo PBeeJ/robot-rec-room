@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
     padding: 10,
     width: BUTTON_SIZE * 3,
     height: BUTTON_SIZE * 3,
-    zIndex: 1,
   },
   control: {
     position: 'absolute',
@@ -146,6 +145,7 @@ const styles = StyleSheet.create({
     borderRadius: BUTTON_SIZE / 2,
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 1,
   },
   draggable: {
     top: BUTTON_SIZE * 3.5,

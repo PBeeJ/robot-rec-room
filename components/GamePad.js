@@ -25,8 +25,8 @@ export default function GamePad({
           value={movementSpeed || 0}
           minimumValue={0}
           maximumValue={100}
-          minimumTrackTintColor="#FFFFFF"
-          maximumTrackTintColor="#000000"
+          minimumTrackTintColor="white"
+          maximumTrackTintColor="white"
           onSlidingComplete={value => {
             setMovementSpeed(Math.round(value));
             sendMessage(`wsB ${Math.round(value)}`);
@@ -79,16 +79,16 @@ const styles = StyleSheet.create({
     padding: 10,
     width: BUTTON_SIZE * 3,
     height: BUTTON_SIZE * 3,
-    zIndex: 1,
   },
   sliderWrapper: {
     position: 'absolute',
+    height: 50,
     bottom: -85,
     left: -30,
     alignItems: 'center',
   },
   slider: {
-    width: 280,
+    width: 220,
     height: 30,
   },
   text: {
@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     borderRadius: BUTTON_SIZE / 2,
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 1,
   },
   forward: {
     top: 0,

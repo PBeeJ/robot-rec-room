@@ -5,15 +5,14 @@ import {WebView} from 'react-native-webview';
 export default function Video({url, width, height}) {
   function formatHtml() {
     return (
-      '<html><body><img src="' +
+      '<html style="pointer-events:none"><body style="pointer-events:none"><img src="' +
       url +
-      '" width="100%" style="background-color: white; min-height: 100%; min-width: 100%; position: fixed; top: 0; left: 0;"></body></html>'
+      '" width="100%" style="pointer-events:none; min-height: 100%; min-width: 100%; position: fixed; top: 0; left: 0;"></body></html>'
     );
   }
 
   return (
     <WebView
-      pointerEvents="none"
       style={styles.container}
       automaticallyAdjustContentInsets={true}
       scalesPageToFit={true}
@@ -29,8 +28,10 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     opacity: 0.4,
-    width: '100%',
-    height: '100%',
-    zIndex: 0,
+    left: '20%',
+    width: 200,
+    height: 100,
+    zIndex: 1,
+    backgroundColor: 'green',
   },
 });

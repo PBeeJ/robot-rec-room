@@ -7,8 +7,10 @@ import WS from 'react-native-websocket';
 
 import Loading from './components/Loading.js';
 import Controls from './components/Controls.js';
+// import Video from './components/Video.js';
 
 import {
+  // CAMERA_URL,
   OFFLINE_MODE,
   WEBSOCKET_URL,
   DEFAULT_SPEED,
@@ -100,14 +102,17 @@ export default function App() {
       {isLoading ? (
         <Loading message={`Connecting to ${WEBSOCKET_URL}`} />
       ) : (
-        <Controls
-          movement={movement}
-          information={information}
-          lastCommand={lastCommand}
-          movementSpeed={movementSpeed}
-          setMovementSpeed={setMovementSpeed}
-          sendMessage={sendMessage}
-        />
+        <>
+          <Controls
+            movement={movement}
+            information={information}
+            lastCommand={lastCommand}
+            movementSpeed={movementSpeed}
+            setMovementSpeed={setMovementSpeed}
+            sendMessage={sendMessage}
+          />
+          {/* <Video url={`http://${CAMERA_URL}/video_feed`} /> */}
+        </>
       )}
     </Pressable>
   );
@@ -116,7 +121,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'darkorange',
-    padding: 20,
+    backgroundColor: '#888',
   },
 });

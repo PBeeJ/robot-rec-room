@@ -1,7 +1,7 @@
 import React from 'react';
 import {Pressable, Text, StyleSheet} from 'react-native';
 
-import {BUTTON_SIZE} from '@env';
+import {BUTTON_SIZE, ICON_SIZE} from '@env';
 
 // TODO: use hitSlop to make the button hit area bigger
 
@@ -9,7 +9,6 @@ export default function Button({
   sendMessage,
   command,
   cancelCommand,
-  color,
   style,
   icon,
   iconSize,
@@ -17,21 +16,28 @@ export default function Button({
   label,
 }) {
   const Icon = icon;
+  const defaultIconSize = iconSize || parseInt(ICON_SIZE, 10) || 30;
+  const buttonSize = parseInt(BUTTON_SIZE, 10) || 50;
+
   return (
     <Pressable
       android_ripple={{
         color: 'rgba(0,0,0,0.2)',
         borderless: true,
-        radius: BUTTON_SIZE / 1.7,
+        radius: buttonSize,
       }}
       style={style}
-      onPressIn={() => command && sendMessage(command)}
+      onPressIn={() => {
+        console.log('command: ', command);
+        command && sendMessage(command);
+      }}
       onPressOut={() => cancelCommand && sendMessage(cancelCommand)}>
       {icon && (
         <Icon
           stroke={iconColor || 'brown'}
-          width={iconSize || 50}
-          height={iconSize || 50}
+          width={defaultIconSize}
+          height={defaultIconSize}
+          style={styles.icon}
         />
       )}
       {label && <Text style={styles.text}>{label}</Text>}
@@ -48,5 +54,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -15,
     color: 'white',
+  },
+  icon: {
+    position: 'relative',
+    zIndex: 1,
   },
 });
