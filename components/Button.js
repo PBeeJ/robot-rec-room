@@ -6,14 +6,14 @@ import {BUTTON_SIZE, ICON_SIZE} from '@env';
 // TODO: use hitSlop to make the button hit area bigger
 
 export default function Button({
-  sendMessage,
-  command,
-  cancelCommand,
+  onPressIn,
+  onPressOut,
   style,
   icon,
   iconSize,
   iconColor,
   label,
+  disabled,
 }) {
   const Icon = icon;
   const defaultIconSize = iconSize || parseInt(ICON_SIZE, 10) || 30;
@@ -26,12 +26,10 @@ export default function Button({
         borderless: true,
         radius: buttonSize,
       }}
+      disabled={disabled}
       style={style}
-      onPressIn={() => {
-        console.log('command: ', command);
-        command && sendMessage(command);
-      }}
-      onPressOut={() => cancelCommand && sendMessage(cancelCommand)}>
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}>
       {icon && (
         <Icon
           stroke={iconColor || 'brown'}

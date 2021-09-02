@@ -7,19 +7,26 @@ function Item({name}) {
   return <Text style={styles.text}>{name}</Text>;
 }
 
-export default function GameInfo({lastCommand, rotation, speed, information}) {
+export default function GameInfo({
+  movementSpeed,
+  lastCommand,
+  rotation,
+  information,
+  rollTare,
+}) {
   function formatValue(value) {
     return value.toFixed(2);
   }
 
   return (
     <View style={styles.container}>
-      {!isNaN(speed) && (
+      {!isNaN(movementSpeed) && (
         <View style={styles.wrapper}>
           <Text style={styles.title}>Config</Text>
           <View style={styles.column}>
             <Item name={`server: ${WEBSOCKET_URL}`} />
-            <Item name={`movement speed: ${speed}%`} />
+            <Item name={`movement speed: ${movementSpeed}%`} />
+            <Item name={`roll tare: ${rollTare}%`} />
           </View>
         </View>
       )}
@@ -57,10 +64,6 @@ export default function GameInfo({lastCommand, rotation, speed, information}) {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    left: 0,
     padding: 10,
     backgroundColor: 'rgba(0,0,0,0.2)',
     display: 'flex',
