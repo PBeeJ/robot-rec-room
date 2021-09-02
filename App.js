@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Pressable, StyleSheet} from 'react-native';
-import {accelerometer} from 'react-native-sensors';
+import {orientation} from 'react-native-sensors';
 import {setUpdateIntervalForType, SensorTypes} from 'react-native-sensors';
 import {LogBox} from 'react-native';
 import WS from 'react-native-websocket';
@@ -22,14 +22,14 @@ const isOnline = OFFLINE_MODE !== 'true';
 
 LogBox.ignoreLogs(['NativeEventEmitter']); // Ignore NativeEventEmitter warnings
 setUpdateIntervalForType(
-  SensorTypes.accelerometer,
+  SensorTypes.orientation,
   parseInt(ACELEROMETER_REFRESH, 10),
 ); // Limit interval to 500ms
 
 export default function App() {
   const socketRef = useRef();
   const [information, setInformation] = useState(null);
-  const [movement, setMovement] = useState(null);
+  const [rotation, setRotation] = useState(null);
   const [movementSpeed, setMovementSpeed] = useState(
     parseInt(DEFAULT_SPEED, 10),
   );
@@ -65,9 +65,9 @@ export default function App() {
   }
 
   useEffect(() => {
-    // This is where we get the accelerometer data
-    const subscription = accelerometer.subscribe(({x, y, z}) =>
-      setMovement({x, y, z}),
+    // This is where we get the orientation data
+    const subscription = orientation.subscribe(({pitch, roll, yaw}) =>
+      setRotation({pitch, roll, yaw}),
     );
 
     // Unsubscribe on component unmount
@@ -104,7 +104,7 @@ export default function App() {
       ) : (
         <>
           <Controls
-            movement={movement}
+            rotation={rotation}
             information={information}
             lastCommand={lastCommand}
             movementSpeed={movementSpeed}

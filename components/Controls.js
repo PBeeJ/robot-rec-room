@@ -6,7 +6,7 @@ import GameInfo from './GameInfo.js';
 
 export default function Controls({
   information,
-  movement,
+  rotation,
   lastCommand,
   movementSpeed,
   setMovementSpeed,
@@ -24,7 +24,7 @@ export default function Controls({
       {/* <Arrows arrows={arrows} zeroPoint={zeroPoint} /> */}
       <GameInfo
         lastCommand={lastCommand}
-        movement={movement}
+        rotation={rotation}
         speed={movementSpeed}
         information={information}
       />

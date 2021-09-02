@@ -7,7 +7,7 @@ function Item({name}) {
   return <Text style={styles.text}>{name}</Text>;
 }
 
-export default function GameInfo({lastCommand, movement, speed, information}) {
+export default function GameInfo({lastCommand, rotation, speed, information}) {
   function formatValue(value) {
     return value.toFixed(2);
   }
@@ -33,13 +33,13 @@ export default function GameInfo({lastCommand, movement, speed, information}) {
           </View>
         </View>
       )}
-      {movement && (
+      {rotation && (
         <View style={styles.wrapper}>
-          <Text style={styles.title}>Movement</Text>
+          <Text style={styles.title}>Orientation</Text>
           <View style={styles.column}>
-            <Item name={`x: ${formatValue(movement.x)}`} />
-            <Item name={`y: ${formatValue(movement.y)}`} />
-            <Item name={`z: ${formatValue(movement.z)}`} />
+            <Item name={`pitch: ${formatValue(rotation.pitch)}`} />
+            <Item name={`roll: ${formatValue(rotation.roll)}`} />
+            <Item name={`yaw: ${formatValue(rotation.yaw)}`} />
           </View>
         </View>
       )}
