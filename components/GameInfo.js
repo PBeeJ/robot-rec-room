@@ -1,25 +1,32 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-import {WEBSOCKET_URL} from '@env';
+import {WEBSOCKET_URL} from '@env'; // I'm a file edit for the magic to recognize a change has happened.
 
 function Item({name}) {
   return <Text style={styles.text}>{name}</Text>;
 }
 
-export default function GameInfo({lastCommand, movement, speed, information}) {
+export default function GameInfo({
+  movementSpeed,
+  lastCommand,
+  rotation,
+  information,
+  rollTare,
+}) {
   function formatValue(value) {
     return value.toFixed(2);
   }
 
   return (
     <View style={styles.container}>
-      {!isNaN(speed) && (
+      {!isNaN(movementSpeed) && (
         <View style={styles.wrapper}>
           <Text style={styles.title}>Config</Text>
           <View style={styles.column}>
             <Item name={`server: ${WEBSOCKET_URL}`} />
-            <Item name={`movement speed: ${speed}%`} />
+            <Item name={`movement speed: ${movementSpeed}%`} />
+            <Item name={`roll tare: ${rollTare}%`} />
           </View>
         </View>
       )}
@@ -33,13 +40,13 @@ export default function GameInfo({lastCommand, movement, speed, information}) {
           </View>
         </View>
       )}
-      {movement && (
+      {rotation && (
         <View style={styles.wrapper}>
-          <Text style={styles.title}>Movement</Text>
+          <Text style={styles.title}>Orientation</Text>
           <View style={styles.column}>
-            <Item name={`x: ${formatValue(movement.x)}`} />
-            <Item name={`y: ${formatValue(movement.y)}`} />
-            <Item name={`z: ${formatValue(movement.z)}`} />
+            <Item name={`pitch: ${formatValue(rotation.pitch)}`} />
+            <Item name={`roll: ${formatValue(rotation.roll)}`} />
+            <Item name={`yaw: ${formatValue(rotation.yaw)}`} />
           </View>
         </View>
       )}
@@ -57,10 +64,6 @@ export default function GameInfo({lastCommand, movement, speed, information}) {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    left: 0,
     padding: 10,
     backgroundColor: 'rgba(0,0,0,0.2)',
     display: 'flex',

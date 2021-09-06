@@ -1,22 +1,80 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Button from './Button';
+import GameInfo from './GameInfo';
+import {orientation} from 'react-native-sensors';
+
+import {setUpdateIntervalForType, SensorTypes} from 'react-native-sensors';
+import {LogBox} from 'react-native';
+
 import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   ChevronUp,
+  Compass,
 } from 'react-native-feather';
 import Slider from '@react-native-community/slider';
 
-import {BUTTON_SIZE as SIZE} from '@env';
+import {BUTTON_SIZE as SIZE, ACELEROMETER_REFRESH, DEFAULT_SPEED} from '@env';
+
 const BUTTON_SIZE = parseInt(SIZE, 10);
 
-export default function GamePad({
-  sendMessage,
-  movementSpeed,
-  setMovementSpeed,
-}) {
+LogBox.ignoreLogs(['NativeEventEmitter']); // Ignore NativeEventEmitter warnings
+setUpdateIntervalForType(
+  SensorTypes.orientation,
+  parseInt(ACELEROMETER_REFRESH, 10),
+); // Limit interval to 500ms
+
+// TODO Fine tune these controls, both here and move.py on the bot
+function boundedRangeMap(val, min, max) {
+  if (val < min) {
+    return -100;
+  } else if (val > max) {
+    return 100;
+  }
+  return Math.round(((val - min) / (max - min)) * 200 - 100);
+}
+
+function convertRotation(rotation, rollTare) {
+  return [
+    boundedRangeMap(rotation.roll - rollTare, -1, 1),
+    boundedRangeMap(rotation.pitch, -1, 1),
+  ];
+}
+
+export default function GamePad({sendMessage, lastCommand, information}) {
+  const [movementSpeed, setMovementSpeed] = useState(
+    parseInt(DEFAULT_SPEED, 10),
+  );
+
+  const [tiltMode, setTiltMode] = useState(false);
+  const [rollTare, setRollTare] = useState(0);
+
+  const [rotation, setRotation] = useState(null);
+
+  useEffect(() => {
+    if (tiltMode) {
+      const [throttle, steering] = convertRotation(rotation, rollTare);
+      setMovementSpeed(Math.abs(throttle));
+      sendMessage(`TiltControl ${throttle} ${steering}`);
+    }
+  }, [tiltMode, rotation, rollTare, sendMessage]);
+
+  useEffect(() => {
+    // This is where we get the orientation data
+    const subscription = orientation.subscribe(({pitch, roll, yaw}) =>
+      setRotation({pitch, roll, yaw}),
+    );
+
+    // Unsubscribe on component unmount
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const onPressOut = () => {
+    sendMessage('WheelStop');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.sliderWrapper}>
@@ -31,42 +89,65 @@ export default function GamePad({
             setMovementSpeed(Math.round(value));
             sendMessage(`wsB ${Math.round(value)}`);
           }}
+          disabled={tiltMode}
           thumbTintColor="brown"
         />
         <Text style={styles.text}>{`Movement speed ${movementSpeed}%`}</Text>
       </View>
       <Button
-        icon={ChevronUp}
+        icon={Compass}
+        onPressIn={() => {
+          setRollTare(rotation.roll);
+          setTiltMode(true);
+        }}
+        onPressOut={() => {
+          onPressOut();
+          setTiltMode(false);
+        }}
         sendMessage={sendMessage}
+        style={{...styles.control, ...styles.tilt}}
+      />
+      <Button
+        icon={ChevronUp}
+        onPressIn={() => sendMessage('forward')}
+        onPressOut={onPressOut}
+        disabled={tiltMode}
         label="forward"
-        command="forward"
-        cancelCommand="DS"
         style={{...styles.control, ...styles.forward}}
       />
       <Button
         icon={ChevronDown}
-        sendMessage={sendMessage}
         label="backward"
-        command="backward"
-        cancelCommand="DS"
+        onPressIn={() => sendMessage('backward')}
+        onPressOut={onPressOut}
+        disabled={tiltMode}
         style={{...styles.control, ...styles.backward}}
       />
       <Button
         icon={ChevronLeft}
-        sendMessage={sendMessage}
         label="left"
-        command="left"
-        cancelCommand="TS"
+        onPressIn={() => sendMessage('left')}
+        onPressOut={onPressOut}
+        disabled={tiltMode}
         style={{...styles.control, ...styles.left}}
       />
       <Button
         icon={ChevronRight}
-        sendMessage={sendMessage}
         label="right"
-        command="right"
-        cancelCommand="TS"
+        onPressIn={() => sendMessage('right')}
+        onPressOut={onPressOut}
+        disabled={tiltMode}
         style={{...styles.control, ...styles.right}}
       />
+      <View style={styles.info}>
+        <GameInfo
+          movementSpeed={movementSpeed}
+          rollTare={rollTare}
+          lastCommand={lastCommand}
+          rotation={rotation}
+          information={information}
+        />
+      </View>
     </View>
   );
 }
@@ -109,6 +190,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
+  tilt: {
+    top: 0,
+    left: 0,
+  },
   forward: {
     top: 0,
     left: BUTTON_SIZE,
@@ -128,5 +213,10 @@ const styles = StyleSheet.create({
     top: BUTTON_SIZE,
     left: BUTTON_SIZE * 2,
     paddingLeft: 5,
+  },
+  info: {
+    position: 'absolute',
+    bottom: -160,
+    left: 0,
   },
 });
