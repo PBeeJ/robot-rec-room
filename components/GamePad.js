@@ -62,6 +62,9 @@ export default function GamePad({sendMessage, lastCommand, information}) {
   }, [tiltMode, rotation, rollTare, sendMessage]);
 
   useEffect(() => {
+    // Set the default speed
+    sendMessage(`wsB ${parseInt(DEFAULT_SPEED, 10)}`);
+
     // This is where we get the orientation data
     const subscription = orientation.subscribe(({pitch, roll, yaw}) =>
       setRotation({pitch, roll, yaw}),
@@ -72,74 +75,79 @@ export default function GamePad({sendMessage, lastCommand, information}) {
   }, []);
 
   const onPressOut = () => {
+    // Send ALL the messages - STOPPPPP!!!
     sendMessage('WheelStop');
+    sendMessage('DS');
+    sendMessage('TS');
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.sliderWrapper}>
-        <Slider
-          style={styles.slider}
-          value={movementSpeed || 0}
-          minimumValue={0}
-          maximumValue={100}
-          minimumTrackTintColor="white"
-          maximumTrackTintColor="white"
-          onSlidingComplete={value => {
-            setMovementSpeed(Math.round(value));
-            sendMessage(`wsB ${Math.round(value)}`);
+    <View style={styles.parent}>
+      <View style={styles.container}>
+        <Button
+          icon={Compass}
+          onPressIn={() => {
+            setRollTare(rotation.roll);
+            setTiltMode(true);
           }}
-          disabled={tiltMode}
-          thumbTintColor="brown"
+          onPressOut={() => {
+            onPressOut();
+            setTiltMode(false);
+          }}
+          sendMessage={sendMessage}
+          style={{...styles.control, ...styles.tilt}}
         />
-        <Text style={styles.text}>{`Movement speed ${movementSpeed}%`}</Text>
+        <Button
+          icon={ChevronUp}
+          onPressIn={() => sendMessage('forward')}
+          onPressOut={onPressOut}
+          disabled={tiltMode}
+          label="forward"
+          style={{...styles.control, ...styles.forward}}
+        />
+        <Button
+          icon={ChevronDown}
+          label="backward"
+          onPressIn={() => sendMessage('backward')}
+          onPressOut={onPressOut}
+          disabled={tiltMode}
+          style={{...styles.control, ...styles.backward}}
+        />
+        <Button
+          icon={ChevronLeft}
+          label="left"
+          onPressIn={() => sendMessage('left')}
+          onPressOut={onPressOut}
+          disabled={tiltMode}
+          style={{...styles.control, ...styles.left}}
+        />
+        <Button
+          icon={ChevronRight}
+          label="right"
+          onPressIn={() => sendMessage('right')}
+          onPressOut={onPressOut}
+          disabled={tiltMode}
+          style={{...styles.control, ...styles.right}}
+        />
       </View>
-      <Button
-        icon={Compass}
-        onPressIn={() => {
-          setRollTare(rotation.roll);
-          setTiltMode(true);
-        }}
-        onPressOut={() => {
-          onPressOut();
-          setTiltMode(false);
-        }}
-        sendMessage={sendMessage}
-        style={{...styles.control, ...styles.tilt}}
-      />
-      <Button
-        icon={ChevronUp}
-        onPressIn={() => sendMessage('forward')}
-        onPressOut={onPressOut}
-        disabled={tiltMode}
-        label="forward"
-        style={{...styles.control, ...styles.forward}}
-      />
-      <Button
-        icon={ChevronDown}
-        label="backward"
-        onPressIn={() => sendMessage('backward')}
-        onPressOut={onPressOut}
-        disabled={tiltMode}
-        style={{...styles.control, ...styles.backward}}
-      />
-      <Button
-        icon={ChevronLeft}
-        label="left"
-        onPressIn={() => sendMessage('left')}
-        onPressOut={onPressOut}
-        disabled={tiltMode}
-        style={{...styles.control, ...styles.left}}
-      />
-      <Button
-        icon={ChevronRight}
-        label="right"
-        onPressIn={() => sendMessage('right')}
-        onPressOut={onPressOut}
-        disabled={tiltMode}
-        style={{...styles.control, ...styles.right}}
-      />
       <View style={styles.info}>
+        <View style={styles.sliderWrapper}>
+          <Slider
+            style={styles.slider}
+            value={movementSpeed || 0}
+            minimumValue={0}
+            maximumValue={100}
+            minimumTrackTintColor="white"
+            maximumTrackTintColor="white"
+            onSlidingComplete={value => {
+              setMovementSpeed(Math.round(value));
+              sendMessage(`wsB ${Math.round(value)}`);
+            }}
+            disabled={tiltMode}
+            thumbTintColor="brown"
+          />
+          <Text style={styles.text}>{`Movement speed ${movementSpeed}%`}</Text>
+        </View>
         <GameInfo
           movementSpeed={movementSpeed}
           rollTare={rollTare}
@@ -153,6 +161,12 @@ export default function GamePad({sendMessage, lastCommand, information}) {
 }
 
 const styles = StyleSheet.create({
+  parent: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+  },
   container: {
     position: 'absolute',
     top: 20,
@@ -164,12 +178,12 @@ const styles = StyleSheet.create({
   sliderWrapper: {
     position: 'absolute',
     height: 50,
-    bottom: -85,
-    left: -30,
+    bottom: 100,
+    left: 0,
     alignItems: 'center',
   },
   slider: {
-    width: 220,
+    width: 500,
     height: 30,
   },
   text: {
@@ -191,8 +205,8 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   tilt: {
-    top: 0,
-    left: 0,
+    top: -10,
+    left: -20,
   },
   forward: {
     top: 0,
@@ -216,7 +230,7 @@ const styles = StyleSheet.create({
   },
   info: {
     position: 'absolute',
-    bottom: -160,
+    bottom: 0,
     left: 0,
   },
 });

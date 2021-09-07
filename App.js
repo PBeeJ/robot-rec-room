@@ -70,8 +70,14 @@ export default function App() {
           url={`ws://${WEBSOCKET_URL}`}
           onOpen={handleOpen}
           onMessage={handleMessage}
-          onError={console.log}
-          onClose={console.log}
+          onError={e => {
+            console.error(e);
+            setIsLoading(true);
+          }}
+          onClose={e => {
+            console.error(e);
+            setIsLoading(true);
+          }}
           reconnect
         />
       )}
