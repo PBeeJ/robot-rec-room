@@ -1,16 +1,18 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Pressable, StyleSheet} from 'react-native';
-
+import {StyleSheet, View} from 'react-native';
+import {NativeRouter, Route, Link} from 'react-router-native';
 import WS from 'react-native-websocket';
 
 import Loading from './components/Loading.js';
 import Controls from './components/Controls.js';
-// import Video from './components/Video.js';
+import Home from './components/Home.js';
+import {Home as HomeIcon, Sliders as ControlsIcon} from 'react-native-feather';
 
 import {
-  // CAMERA_URL,
+  ICON_SIZE,
+  BUTTON_SIZE,
   OFFLINE_MODE,
-  WEBSOCKET_URL, // Ooh, look at me.
+  WEBSOCKET_PORT,
   SERVER_INFO_UPDATE_SPEED,
 } from '@env';
 
@@ -19,6 +21,7 @@ const isOnline = OFFLINE_MODE !== 'true';
 export default function App() {
   const socketRef = useRef();
   const [information, setInformation] = useState(null);
+  const [IPAddress, setIPAddress] = useState('192.168.1.10');
 
   const [lastCommand, setLastCommand] = useState(null);
   const [isLoading, setIsLoading] = useState(isOnline && true); // Don't show loading when offline
@@ -63,11 +66,11 @@ export default function App() {
   }, []);
 
   return (
-    <Pressable style={styles.container}>
+    <View style={styles.container}>
       {isOnline && (
         <WS
           ref={socketRef}
-          url={`ws://${WEBSOCKET_URL}`}
+          url={`ws://${IPAddress}:${WEBSOCKET_PORT}`}
           onOpen={handleOpen}
           onMessage={handleMessage}
           onError={console.log}
@@ -76,24 +79,71 @@ export default function App() {
         />
       )}
       {isLoading ? (
-        <Loading message={`Connecting to ${WEBSOCKET_URL}`} />
+        <Loading
+          message={`Connecting to ${IPAddress} on port ${WEBSOCKET_PORT}`}
+        />
       ) : (
-        <>
-          <Controls
-            information={information}
-            lastCommand={lastCommand}
-            sendMessage={sendMessage}
-          />
-          {/* <Video url={`http://${CAMERA_URL}/video_feed`} /> */}
-        </>
+        <NativeRouter>
+          <View style={styles.nav}>
+            <Link to="/" style={{...styles.navItem, borderColor: 'orange'}}>
+              <HomeIcon
+                stroke="orange"
+                fill="none"
+                width={parseInt(ICON_SIZE, 10)}
+                height={parseInt(ICON_SIZE, 10)}
+                strokeWidth={1.5}
+              />
+            </Link>
+            <Link
+              to="/controls"
+              style={{...styles.navItem, borderColor: 'lightgreen'}}>
+              <ControlsIcon
+                stroke="lightgreen"
+                width={parseInt(ICON_SIZE, 10)}
+                height={parseInt(ICON_SIZE, 10)}
+                strokeWidth={1.5}
+              />
+            </Link>
+          </View>
+          <Route exact path="/">
+            <Home setIPAddress={setIPAddress} IPAddress={IPAddress} />
+          </Route>
+          <Route path="/controls">
+            <Controls
+              information={information}
+              lastCommand={lastCommand}
+              sendMessage={sendMessage}
+            />
+          </Route>
+        </NativeRouter>
       )}
-    </Pressable>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#888',
+    backgroundColor: '#333',
+  },
+  nav: {
+    position: 'absolute',
+    top: 10,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    zIndex: 2,
+  },
+  navItem: {
+    marginLeft: 10,
+    marginRight: 10,
+    borderRadius: 100,
+    borderWidth: 1,
+    width: parseInt(BUTTON_SIZE, 10),
+    height: parseInt(BUTTON_SIZE, 10),
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 4,
   },
 });
