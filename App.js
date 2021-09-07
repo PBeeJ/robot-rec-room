@@ -125,12 +125,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#333',
+    alignItems: 'center',
   },
   nav: {
     position: 'absolute',
     top: 10,
-    left: 0,
-    right: 0,
     justifyContent: 'center',
     flexDirection: 'row',
     zIndex: 2,

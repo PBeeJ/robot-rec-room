@@ -4,6 +4,12 @@ import {Picker} from '@react-native-picker/picker';
 import {useState} from 'react/cjs/react.development';
 import {PlusCircle} from 'react-native-feather';
 
+// TODO: save ip address array to phone storage
+
+// TOOD: allow people to clear their storage or delete individual items
+
+// TODO: wait for socket to reconnect before allowing access to controls route
+
 export default function Home({IPAddress, setIPAddress}) {
   const [newAddress, setNewAddress] = useState('');
   const [newName, setNewName] = useState('');
@@ -20,7 +26,7 @@ export default function Home({IPAddress, setIPAddress}) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Choose your robot:</Text>
+      <Text style={styles.title}>Choose a robot:</Text>
       <Picker
         selectedValue={IPAddress}
         onValueChange={value => setIPAddress(value)}
@@ -76,7 +82,9 @@ export default function Home({IPAddress, setIPAddress}) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
     backgroundColor: 'green',
     justifyContent: 'center',
     alignItems: 'center',
@@ -96,7 +104,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   inputWrapper: {
-    marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
   },
