@@ -22,6 +22,12 @@ export default function Home({IPAddress, setIPAddress, options, setOptions}) {
         onValueChange={value => setIPAddress(value)}
         style={styles.picker}
         mode="dropdown">
+        <Picker.Item
+          key={'null'}
+          label={'Select a robot'}
+          value={null}
+          style={styles.pickerItem}
+        />
         {options.map(({name, address}) => {
           return (
             <Picker.Item
