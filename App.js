@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useRef, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {NativeRouter, Route, Link} from 'react-router-native';
@@ -7,6 +8,7 @@ import Loading from './components/Loading.js';
 import Controls from './components/Controls.js';
 import Home from './components/Home.js';
 import {Home as HomeIcon, Sliders as ControlsIcon} from 'react-native-feather';
+import storage from './storage.js';
 
 import {
   ICON_SIZE,
@@ -17,11 +19,15 @@ import {
 } from '@env';
 
 const isOnline = OFFLINE_MODE !== 'true';
-
+const INITIAL_OPTIONS = [
+  {name: 'Phineas', address: '192.168.1.10'},
+  {name: 'Passable', address: '10.1.1.10'},
+];
 export default function App() {
   const socketRef = useRef();
   const [information, setInformation] = useState(null);
   const [IPAddress, setIPAddress] = useState('192.168.1.10');
+  const [options, setOptions] = useState([]);
 
   const [lastCommand, setLastCommand] = useState(null);
   const [isLoading, setIsLoading] = useState(isOnline && true); // Don't show loading when offline
@@ -54,6 +60,61 @@ export default function App() {
   function handleOpen() {
     sendMessage('admin:123456'); // Authorize the connection
   }
+
+  useEffect(() => {
+    // Fetch initial options from storage
+    storage
+      .load({
+        key: 'options',
+
+        // autoSync (default: true) means if data is not found or has expired,
+        // then invoke the corresponding sync method
+        autoSync: true,
+
+        // syncInBackground (default: true) means if data expired,
+        // return the outdated data first while invoking the sync method.
+        // If syncInBackground is set to false, and there is expired data,
+        // it will wait for the new data and return only after the sync completed.
+        // (This, of course, is slower)
+        syncInBackground: true,
+
+        // you can pass extra params to the sync method
+        // see sync example below
+        syncParams: {
+          extraFetchOptions: {
+            // blahblah
+          },
+          someFlag: true,
+        },
+      })
+      .then(initialOptions => {
+        // found data go to then()
+        console.log('initialOptions: ', initialOptions);
+        setOptions(initialOptions.length ? initialOptions : INITIAL_OPTIONS);
+      })
+      .catch(err => {
+        // any exception including data not found
+        // goes to catch()
+        console.warn(err.message);
+        switch (err.name) {
+          case 'NotFoundError':
+            // TODO;
+            break;
+          case 'ExpiredError':
+            // TODO
+            break;
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    if (options.length) {
+      storage.save({
+        key: 'options',
+        data: options,
+      });
+    }
+  }, [options]);
 
   useEffect(() => {
     let timer;
@@ -106,7 +167,12 @@ export default function App() {
             </Link>
           </View>
           <Route exact path="/">
-            <Home setIPAddress={setIPAddress} IPAddress={IPAddress} />
+            <Home
+              setIPAddress={setIPAddress}
+              IPAddress={IPAddress}
+              options={options}
+              setOptions={setOptions}
+            />
           </Route>
           <Route path="/controls">
             <Controls
