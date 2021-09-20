@@ -4,7 +4,6 @@ import {StyleSheet, View} from 'react-native';
 import {NativeRouter, Route, Link} from 'react-router-native';
 import WS from 'react-native-websocket';
 
-import Loading from './components/Loading.js';
 import Controls from './components/Controls.js';
 import Home from './components/Home.js';
 import {Home as HomeIcon, Sliders as ControlsIcon} from 'react-native-feather';
@@ -26,17 +25,15 @@ const INITIAL_OPTIONS = [
 export default function App() {
   const socketRef = useRef();
   const [information, setInformation] = useState(null);
-  const [IPAddress, setIPAddress] = useState('192.168.1.10');
+  const [IPAddress, setIPAddress] = useState(null);
   const [options, setOptions] = useState([]);
 
   const [lastCommand, setLastCommand] = useState(null);
-  const [isLoading, setIsLoading] = useState(isOnline && true); // Don't show loading when offline
 
   function sendMessage(message) {
     if (socketRef?.current?.send) {
       socketRef?.current?.send(message);
       if (message !== 'get_info') {
-        console.log('message: ', message);
         setLastCommand(message);
       }
     }
@@ -45,7 +42,6 @@ export default function App() {
   function handleMessage({data}) {
     // Don't parse the string if it contains the initial congratulation message
     if (typeof data === 'string' && !data.includes('congratulation')) {
-      setIsLoading(false);
       try {
         const message = JSON.parse(data);
         if (message.title === 'get_info') {
@@ -59,6 +55,15 @@ export default function App() {
 
   function handleOpen() {
     sendMessage('admin:123456'); // Authorize the connection
+  }
+
+  function handleError({message}) {
+    console.log('handleError:', message);
+    setIPAddress(null);
+  }
+
+  function handleClose() {
+    console.log('Connection closed');
   }
 
   // Fetch initial options from storage
@@ -81,72 +86,68 @@ export default function App() {
   }, [options]);
 
   useEffect(() => {
-    let timer;
-    // Fetch the info data
-    clearInterval(timer);
-    timer = setInterval(() => {
-      sendMessage('get_info');
-    }, parseInt(SERVER_INFO_UPDATE_SPEED, 10));
-    return () => clearInterval(timer);
-  }, []);
+    if (IPAddress) {
+      let timer;
+      // Fetch the info data
+      clearInterval(timer);
+      timer = setInterval(() => {
+        sendMessage('get_info');
+      }, parseInt(SERVER_INFO_UPDATE_SPEED, 10));
+      return () => clearInterval(timer);
+    }
+  }, [IPAddress]);
 
   return (
     <View style={styles.container}>
-      {isOnline && (
+      {isOnline && IPAddress !== null && (
         <WS
           ref={socketRef}
           url={`ws://${IPAddress}:${WEBSOCKET_PORT}`}
           onOpen={handleOpen}
           onMessage={handleMessage}
-          onError={console.log}
-          onClose={console.log}
+          onError={handleError}
+          onClose={handleClose}
           reconnect
         />
       )}
-      {isLoading ? (
-        <Loading
-          message={`Connecting to ${IPAddress} on port ${WEBSOCKET_PORT}`}
-        />
-      ) : (
-        <NativeRouter>
-          <View style={styles.nav}>
-            <Link to="/" style={{...styles.navItem, borderColor: 'orange'}}>
-              <HomeIcon
-                stroke="orange"
-                fill="none"
-                width={parseInt(ICON_SIZE, 10)}
-                height={parseInt(ICON_SIZE, 10)}
-                strokeWidth={1.5}
-              />
-            </Link>
-            <Link
-              to="/controls"
-              style={{...styles.navItem, borderColor: 'lightgreen'}}>
-              <ControlsIcon
-                stroke="lightgreen"
-                width={parseInt(ICON_SIZE, 10)}
-                height={parseInt(ICON_SIZE, 10)}
-                strokeWidth={1.5}
-              />
-            </Link>
-          </View>
-          <Route exact path="/">
-            <Home
-              setIPAddress={setIPAddress}
-              IPAddress={IPAddress}
-              options={options}
-              setOptions={setOptions}
+      <NativeRouter>
+        <View style={styles.nav}>
+          <Link to="/" style={{...styles.navItem, borderColor: 'orange'}}>
+            <HomeIcon
+              stroke="orange"
+              fill="none"
+              width={parseInt(ICON_SIZE, 10)}
+              height={parseInt(ICON_SIZE, 10)}
+              strokeWidth={1.5}
             />
-          </Route>
-          <Route path="/controls">
-            <Controls
-              information={information}
-              lastCommand={lastCommand}
-              sendMessage={sendMessage}
+          </Link>
+          <Link
+            to="/controls"
+            style={{...styles.navItem, borderColor: 'lightgreen'}}>
+            <ControlsIcon
+              stroke="lightgreen"
+              width={parseInt(ICON_SIZE, 10)}
+              height={parseInt(ICON_SIZE, 10)}
+              strokeWidth={1.5}
             />
-          </Route>
-        </NativeRouter>
-      )}
+          </Link>
+        </View>
+        <Route exact path="/">
+          <Home
+            setIPAddress={setIPAddress}
+            IPAddress={IPAddress}
+            options={options}
+            setOptions={setOptions}
+          />
+        </Route>
+        <Route path="/controls">
+          <Controls
+            information={information}
+            lastCommand={lastCommand}
+            sendMessage={sendMessage}
+          />
+        </Route>
+      </NativeRouter>
     </View>
   );
 }
