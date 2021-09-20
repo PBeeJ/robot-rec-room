@@ -61,58 +61,22 @@ export default function App() {
     sendMessage('admin:123456'); // Authorize the connection
   }
 
+  // Fetch initial options from storage
   useEffect(() => {
-    // Fetch initial options from storage
     storage
-      .load({
-        key: 'options',
-
-        // autoSync (default: true) means if data is not found or has expired,
-        // then invoke the corresponding sync method
-        autoSync: true,
-
-        // syncInBackground (default: true) means if data expired,
-        // return the outdated data first while invoking the sync method.
-        // If syncInBackground is set to false, and there is expired data,
-        // it will wait for the new data and return only after the sync completed.
-        // (This, of course, is slower)
-        syncInBackground: true,
-
-        // you can pass extra params to the sync method
-        // see sync example below
-        syncParams: {
-          extraFetchOptions: {
-            // blahblah
-          },
-          someFlag: true,
-        },
-      })
-      .then(initialOptions => {
-        // found data go to then()
-        console.log('initialOptions: ', initialOptions);
-        setOptions(initialOptions.length ? initialOptions : INITIAL_OPTIONS);
-      })
-      .catch(err => {
-        // any exception including data not found
-        // goes to catch()
-        console.warn(err.message);
-        switch (err.name) {
-          case 'NotFoundError':
-            // TODO;
-            break;
-          case 'ExpiredError':
-            // TODO
-            break;
-        }
-      });
+      .load({key: 'options', autoSync: true, syncInBackground: true})
+      .then(initialOptions =>
+        setOptions(initialOptions.length ? initialOptions : INITIAL_OPTIONS),
+      )
+      .catch(err => console.warn(err.message));
   }, []);
 
+  // Persist options to storage
   useEffect(() => {
     if (options.length) {
-      storage.save({
-        key: 'options',
-        data: options,
-      });
+      storage
+        .save({key: 'options', data: options})
+        .catch(err => console.warn(err.message));
     }
   }, [options]);
 
