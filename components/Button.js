@@ -1,7 +1,7 @@
 import React from 'react';
 import {Pressable, Text, StyleSheet} from 'react-native';
 
-import {BUTTON_SIZE, ICON_SIZE} from '@env';
+import {BUTTON_SIZE, ICON_SIZE} from '../App';
 
 // TODO: use hitSlop to make the button hit area bigger
 
@@ -17,14 +17,13 @@ export default function Button({
 }) {
   const Icon = icon;
   const defaultIconSize = iconSize || parseInt(ICON_SIZE, 10) || 30;
-  const buttonSize = parseInt(BUTTON_SIZE, 10) || 50;
 
   return (
     <Pressable
       android_ripple={{
         color: 'rgba(0,0,0,0.2)',
         borderless: true,
-        radius: buttonSize,
+        radius: BUTTON_SIZE,
       }}
       disabled={disabled}
       style={style}

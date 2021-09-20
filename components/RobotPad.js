@@ -11,8 +11,7 @@ import {
   Minus,
 } from 'react-native-feather';
 
-import {BUTTON_SIZE as SIZE} from '@env';
-const BUTTON_SIZE = parseInt(SIZE, 10);
+import BUTTON_SIZE from '../App';
 
 export default function RobotPad({sendMessage}) {
   const containerWidth = styles.draggable.left * -1;

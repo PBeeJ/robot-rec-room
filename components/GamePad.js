@@ -16,15 +16,14 @@ import {
 } from 'react-native-feather';
 import Slider from '@react-native-community/slider';
 
-import {BUTTON_SIZE as SIZE, ACELEROMETER_REFRESH, DEFAULT_SPEED} from '@env';
+import {BUTTON_SIZE} from '../App';
 
-const BUTTON_SIZE = parseInt(SIZE, 10);
+const ACELEROMETER_REFRESH = 300;
+// This is a percentage
+const DEFAULT_SPEED = 30;
 
 LogBox.ignoreLogs(['NativeEventEmitter']); // Ignore NativeEventEmitter warnings
-setUpdateIntervalForType(
-  SensorTypes.orientation,
-  parseInt(ACELEROMETER_REFRESH, 10),
-); // Limit interval to 500ms
+setUpdateIntervalForType(SensorTypes.orientation, ACELEROMETER_REFRESH); // Limit interval to 500ms
 
 // TODO Fine tune these controls, both here and move.py on the bot
 function boundedRangeMap(val, min, max) {

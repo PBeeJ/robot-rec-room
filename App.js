@@ -10,13 +10,10 @@ import Home from './components/Home.js';
 import {Home as HomeIcon, Sliders as ControlsIcon} from 'react-native-feather';
 import storage from './storage.js';
 
-import {
-  ICON_SIZE,
-  BUTTON_SIZE,
-  WEBSOCKET_PORT,
-  SERVER_INFO_UPDATE_SPEED,
-} from '@env';
-
+export const ICON_SIZE = 30;
+export const BUTTON_SIZE = 50;
+const WEBSOCKET_PORT = 8888;
+const SERVER_INFO_UPDATE_SPEED = 10000;
 const isOnline = true;
 
 const INITIAL_OPTIONS = [
@@ -86,7 +83,7 @@ export default function App() {
     clearInterval(timer);
     timer = setInterval(() => {
       sendMessage('get_info');
-    }, parseInt(SERVER_INFO_UPDATE_SPEED, 10));
+    }, SERVER_INFO_UPDATE_SPEED);
     return () => clearInterval(timer);
   }, []);
 
