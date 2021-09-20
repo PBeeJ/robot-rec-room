@@ -11,12 +11,11 @@ import {Home as HomeIcon, Sliders as ControlsIcon} from 'react-native-feather';
 import {
   ICON_SIZE,
   BUTTON_SIZE,
-  OFFLINE_MODE,
   WEBSOCKET_PORT,
   SERVER_INFO_UPDATE_SPEED,
 } from '@env';
 
-const isOnline = OFFLINE_MODE !== 'true';
+const isOnline = true;
 
 export default function App() {
   const socketRef = useRef();

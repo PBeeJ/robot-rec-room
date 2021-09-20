@@ -22,6 +22,10 @@ export default function Home({IPAddress, setIPAddress}) {
       name: 'Passable',
       address: '10.1.1.10',
     },
+    {
+      name: 'Tank@Ittynet',
+      address: '10.0.0.251',
+    },
   ]);
 
   return (
@@ -64,9 +68,9 @@ export default function Home({IPAddress, setIPAddress}) {
           }}
           onPress={() => {
             setOptions(opt => [...opt, {name: newName, address: newAddress}]);
+            setIPAddress(newAddress);
             setNewAddress('');
             setNewName('');
-            setIPAddress(newAddress);
           }}>
           <PlusCircle
             stroke={'white'}

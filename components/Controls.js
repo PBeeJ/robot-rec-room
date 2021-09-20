@@ -13,7 +13,6 @@ export default function Controls({
     <>
       <GamePad
         sendMessage={sendMessage}
-        rotation={rotation}
         information={information}
         lastCommand={lastCommand}
       />

@@ -72,7 +72,10 @@ export default function GamePad({sendMessage, lastCommand, information}) {
   }, []);
 
   const onPressOut = () => {
+    // Aggh... sent ALL the stop commands!!
     sendMessage('WheelStop');
+    sendMessage('DS');
+    sendMessage('TS');
   };
 
   return (

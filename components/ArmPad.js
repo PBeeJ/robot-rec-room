@@ -8,42 +8,44 @@ import {BUTTON_SIZE as SIZE} from '@env';
 const BUTTON_SIZE = parseInt(SIZE, 10);
 
 export default function ButtonPad({sendMessage}) {
+  const onPressOut = () => {
+    // Aggh... sent ALL the stop commands!!
+    sendMessage('HAstop');
+    sendMessage('Armstop');
+  };
+
   return (
     <View style={styles.container}>
       <Button
         icon={ArrowUp}
         iconSize={24}
         label="hand"
-        sendMessage={sendMessage}
-        command="handup"
-        cancelCommand="HAstop"
+        onPressIn={() => sendMessage('handup')}
+        onPressOut={onPressOut}
         style={{...styles.control, ...styles.handUp}}
       />
       <Button
         icon={ArrowDown}
         iconSize={24}
         label="hand"
-        sendMessage={sendMessage}
-        command="handdown"
-        cancelCommand="HAstop"
+        onPressIn={() => sendMessage('handdown')}
+        onPressOut={onPressOut}
         style={{...styles.control, ...styles.handDown}}
       />
       <Button
         icon={ArrowLeft}
         iconSize={24}
         label="arm"
-        sendMessage={sendMessage}
-        command="armdown"
-        cancelCommand="Armstop"
+        onPressIn={() => sendMessage('armdown')}
+        onPressOut={onPressOut}
         style={{...styles.control, ...styles.armDown}}
       />
       <Button
         icon={ArrowRight}
         iconSize={24}
         label="arm"
-        sendMessage={sendMessage}
-        command="armup"
-        cancelCommand="Armstop"
+        onPressIn={() => sendMessage('armup')}
+        onPressOut={onPressOut}
         style={{...styles.control, ...styles.armUp}}
       />
     </View>
