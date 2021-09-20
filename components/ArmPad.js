@@ -4,7 +4,7 @@ import {ArrowLeft, ArrowRight, ArrowUp, ArrowDown} from 'react-native-feather';
 
 import Button from './Button';
 
-import BUTTON_SIZE from '../App';
+import {BUTTON_SIZE} from '../Constants';
 
 export default function ButtonPad({sendMessage}) {
   const onPressOut = () => {

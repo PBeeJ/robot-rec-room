@@ -16,7 +16,7 @@ import {
 } from 'react-native-feather';
 import Slider from '@react-native-community/slider';
 
-import {BUTTON_SIZE} from '../App';
+import {BUTTON_SIZE} from '../Constants';
 
 const ACELEROMETER_REFRESH = 300;
 // This is a percentage

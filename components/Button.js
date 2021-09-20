@@ -1,7 +1,7 @@
 import React from 'react';
 import {Pressable, Text, StyleSheet} from 'react-native';
 
-import {BUTTON_SIZE, ICON_SIZE} from '../App';
+import {BUTTON_SIZE, ICON_SIZE} from '../Constants';
 
 // TODO: use hitSlop to make the button hit area bigger
 
