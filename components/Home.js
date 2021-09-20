@@ -10,19 +10,9 @@ import {PlusCircle} from 'react-native-feather';
 
 // TODO: wait for socket to reconnect before allowing access to controls route
 
-export default function Home({IPAddress, setIPAddress}) {
+export default function Home({IPAddress, setIPAddress, options, setOptions}) {
   const [newAddress, setNewAddress] = useState('');
   const [newName, setNewName] = useState('');
-  const [options, setOptions] = useState([
-    {
-      name: 'Phineas',
-      address: '192.168.1.10',
-    },
-    {
-      name: 'Passable',
-      address: '10.1.1.10',
-    },
-  ]);
 
   return (
     <View style={styles.container}>
