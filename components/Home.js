@@ -13,20 +13,6 @@ import {PlusCircle} from 'react-native-feather';
 export default function Home({IPAddress, setIPAddress, options, setOptions}) {
   const [newAddress, setNewAddress] = useState('');
   const [newName, setNewName] = useState('');
-  const [options, setOptions] = useState([
-    {
-      name: 'Phineas',
-      address: '192.168.1.10',
-    },
-    {
-      name: 'Passable',
-      address: '10.1.1.10',
-    },
-    {
-      name: 'Tank@Ittynet',
-      address: '10.0.0.251',
-    },
-  ]);
 
   return (
     <View style={styles.container}>
