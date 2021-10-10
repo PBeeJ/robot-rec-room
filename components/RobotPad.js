@@ -72,55 +72,49 @@ export default function RobotPad({sendMessage}) {
       <Button
         icon={Plus}
         iconSize={24}
-        label="claw"
-        sendMessage={sendMessage}
-        command="grab"
-        cancelCommand="stop"
+        label="claw"      
+        onPressIn={() => sendMessage('grab')}
+        onPressOut={() => sendMessage('stop')}
         style={{...styles.control, ...styles.grab}}
       />
       <Button
         icon={Minus}
         iconSize={24}
-        label="claw"
-        sendMessage={sendMessage}
-        command="loose"
-        cancelCommand="stop"
+        label="claw"      
+        onPressIn={() => sendMessage('loose')}
+        onPressOut={() => sendMessage('stop')}
         style={{...styles.control, ...styles.loose}}
       />
       <Button
         icon={RotateCcw}
         iconSize={24}
-        label="claw"
-        sendMessage={sendMessage}
-        command="lookleft"
-        cancelCommand="LRstop"
+        label="claw"      
+        onPressIn={() => sendMessage('lookleft')}
+        onPressOut={() => sendMessage('LRstop')}
         style={{...styles.control, ...styles.lookleft}}
       />
       <Button
         icon={RotateCw}
         iconSize={24}
-        label="claw"
-        sendMessage={sendMessage}
-        command="lookright"
-        cancelCommand="LRstop"
+        label="claw"      
+        onPressIn={() => sendMessage('lookright')}
+        onPressOut={() => sendMessage('LRstop')}
         style={{...styles.control, ...styles.lookright}}
       />
       <Button
         icon={ArrowUp}
         iconSize={24}
-        label="camera"
-        sendMessage={sendMessage}
-        command="up"
-        cancelCommand="UDstop"
+        label="camera"      
+        onPressIn={() => sendMessage('up')}
+        onPressOut={() => sendMessage('UDstop')}
         style={{...styles.control, ...styles.up}}
       />
       <Button
         icon={ArrowDown}
         iconSize={24}
-        label="camera"
-        sendMessage={sendMessage}
-        command="down"
-        cancelCommand="UDstop"
+        label="camera"      
+        onPressIn={() => sendMessage('down')}
+        onPressOut={() => sendMessage('UDstop')}
         style={{...styles.control, ...styles.down}}
       />
     </View>
