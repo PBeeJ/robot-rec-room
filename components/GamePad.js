@@ -105,7 +105,7 @@ export default function GamePad({sendMessage, lastCommand, information}) {
         sendMessage={sendMessage}
         style={{...styles.control, ...styles.tilt}}
       />
-      <View style={styles.circleOuter}/>
+      <View style={styles.circleOuter}>
         <View style={styles.circleInner}/>
       </View>
       <View style={styles.info}>
