@@ -125,10 +125,10 @@ export default function App() {
             />
           </Link>
           <Link
-            to="/controls"
-            style={{...styles.navItem, borderColor: 'lightgreen'}}>
+            to={isConnected ? "/controls" : undefined}
+            style={{...styles.navItem, borderColor: isConnected ? 'lightgreen' : 'grey'}}>
             <ControlsIcon
-              stroke="lightgreen"
+              stroke={isConnected ? 'lightgreen' : 'grey'}
               width={parseInt(ICON_SIZE, 10)}
               height={parseInt(ICON_SIZE, 10)}
               strokeWidth={1.5}

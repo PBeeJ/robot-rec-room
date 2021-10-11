@@ -3,8 +3,6 @@ import {StyleSheet, Text, View} from 'react-native';
 import Button from './Button';
 import GameInfo from './GameInfo';
 import {orientation} from 'react-native-sensors';
-import GamePad from 'react-native-game-pad';
-
 import {setUpdateIntervalForType, SensorTypes} from 'react-native-sensors';
 import {LogBox} from 'react-native';
 
