@@ -4,8 +4,8 @@ import {StyleSheet, View} from 'react-native';
 import {NativeRouter, Route, Link} from 'react-router-native';
 import WS from 'react-native-websocket';
 
-import Controls from './components/Controls.js';
-import Home from './components/Home.js';
+import Controls from './pages/Controls.js';
+import Home from './pages/Home.js';
 import {Home as HomeIcon, Sliders as ControlsIcon} from 'react-native-feather';
 import storage from './storage.js';
 
@@ -18,18 +18,16 @@ import {
 } from '@env';
 
 const isOnline = OFFLINE_MODE !== 'true';
-const INITIAL_OPTIONS = [
-  {name: 'Phineas', address: '192.168.1.10'},
-  {name: 'Passable', address: '10.1.1.10'},
-];
+const INITIAL_OPTIONS = [];
+
 export default function App() {
   const socketRef = useRef();
   const [information, setInformation] = useState(null);
   const [IPAddress, setIPAddress] = useState(null);
   const [options, setOptions] = useState([]);
-
+  const [isConnected, setIsConnected] = useState(false);
   const [lastCommand, setLastCommand] = useState(null);
-
+  
   function sendMessage(message) {
     if (socketRef?.current?.send) {
       socketRef?.current?.send(message);
@@ -54,16 +52,21 @@ export default function App() {
   }
 
   function handleOpen() {
+    console.log('Connection opened');
+    setIsConnected(true);
     sendMessage('admin:123456'); // Authorize the connection
   }
 
-  function handleError({message}) {
-    console.log('handleError:', message);
+  function handleError({ message }) {
+    console.log('Connection error:', message);
+    setIsConnected(null);
     setIPAddress(null);
   }
 
   function handleClose() {
     console.log('Connection closed');
+    setIsConnected(false);
+    setIPAddress(null);
   }
 
   // Fetch initial options from storage
@@ -104,10 +107,10 @@ export default function App() {
           ref={socketRef}
           url={`ws://${IPAddress}:${WEBSOCKET_PORT}`}
           onOpen={handleOpen}
+          onClose={handleClose}
           onMessage={handleMessage}
           onError={handleError}
-          onClose={handleClose}
-          reconnect
+          reconnect // Will try to reconnect onClose
         />
       )}
       <NativeRouter>
@@ -134,6 +137,8 @@ export default function App() {
         </View>
         <Route exact path="/">
           <Home
+            isConnected={isConnected}
+            setIsConnected={setIsConnected}
             setIPAddress={setIPAddress}
             IPAddress={IPAddress}
             options={options}
