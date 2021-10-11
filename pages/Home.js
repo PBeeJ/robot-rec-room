@@ -52,8 +52,6 @@ export default function Home({IPAddress,
     }
   }
 
-  console.log('IPAddress: ', IPAddress);
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Choose a robot</Text>

@@ -1,7 +1,8 @@
 import React from 'react';
-// import ArmPad from '../components/ArmPad.js'
+import ArmPad from '../components/ArmPad.js'
 import GamePad from '../components/GamePad.js';
-// import RobotPad from '../components/RobotPad.js';
+import RobotPad from '../components/RobotPad.js';
+// import Arrows from '../components/Arrows.js';
 
 export default function Controls({
   information,
@@ -17,8 +18,8 @@ export default function Controls({
         information={information}
         lastCommand={lastCommand}
       />
-      {/* <ArmPad sendMessage={sendMessage} /> */}
-      {/* <RobotPad sendMessage={sendMessage} /> */}
+      <ArmPad sendMessage={sendMessage} />
+      <RobotPad sendMessage={sendMessage} />
       {/* <Arrows arrows={arrows} zeroPoint={zeroPoint} /> */}
     </>
   );
