@@ -15,7 +15,7 @@ export default function ButtonPad({sendMessage}) {
         iconSize={24}
         label="hand"      
         onPressIn={() => sendMessage('handup')}
-        onPressOut={() => sendMessage('HAstop')}
+        onPressOut={() => sendMessage('handstop')}
         style={{...styles.control, ...styles.handUp}}
       />
       <Button
@@ -24,7 +24,7 @@ export default function ButtonPad({sendMessage}) {
         label="hand"
         sendMessage={sendMessage}
         onPressIn={() => sendMessage('handdown')}
-        onPressOut={() => sendMessage('HAstop')}
+        onPressOut={() => sendMessage('handstop')}
         style={{...styles.control, ...styles.handDown}}
       />
       <Button
@@ -33,7 +33,7 @@ export default function ButtonPad({sendMessage}) {
         label="arm"
         sendMessage={sendMessage}
         onPressIn={() => sendMessage('armdown')}
-        onPressOut={() => sendMessage('Armstop')}
+        onPressOut={() => sendMessage('armstop')}
         style={{...styles.control, ...styles.armDown}}
       />
       <Button
@@ -42,7 +42,7 @@ export default function ButtonPad({sendMessage}) {
         label="arm"
         sendMessage={sendMessage}
         onPressIn={() => sendMessage('armup')}
-        onPressOut={() => sendMessage('Armstop')}
+        onPressOut={() => sendMessage('armstop')}
         style={{...styles.control, ...styles.armUp}}
       />
     </View>
