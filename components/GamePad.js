@@ -3,15 +3,12 @@ import {StyleSheet, Text, View} from 'react-native';
 import Button from './Button';
 import GameInfo from './GameInfo';
 import {orientation} from 'react-native-sensors';
+import GamePad from 'react-native-game-pad';
 
 import {setUpdateIntervalForType, SensorTypes} from 'react-native-sensors';
 import {LogBox} from 'react-native';
 
 import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
   Compass,
 } from 'react-native-feather';
 import Slider from '@react-native-community/slider';
@@ -19,6 +16,7 @@ import Slider from '@react-native-community/slider';
 import {BUTTON_SIZE as SIZE, ACELEROMETER_REFRESH, DEFAULT_SPEED} from '@env';
 
 const BUTTON_SIZE = parseInt(SIZE, 10);
+const SHIFT = 20;
 
 LogBox.ignoreLogs(['NativeEventEmitter']); // Ignore NativeEventEmitter warnings
 setUpdateIntervalForType(
@@ -107,38 +105,9 @@ export default function GamePad({sendMessage, lastCommand, information}) {
         sendMessage={sendMessage}
         style={{...styles.control, ...styles.tilt}}
       />
-      <Button
-        icon={ChevronUp}
-        onPressIn={() => sendMessage('forward')}
-        onPressOut={onPressOut}
-        disabled={tiltMode}
-        label="forward"
-        style={{...styles.control, ...styles.forward}}
-      />
-      <Button
-        icon={ChevronDown}
-        label="backward"
-        onPressIn={() => sendMessage('backward')}
-        onPressOut={onPressOut}
-        disabled={tiltMode}
-        style={{...styles.control, ...styles.backward}}
-      />
-      <Button
-        icon={ChevronLeft}
-        label="left"
-        onPressIn={() => sendMessage('left')}
-        onPressOut={onPressOut}
-        disabled={tiltMode}
-        style={{...styles.control, ...styles.left}}
-      />
-      <Button
-        icon={ChevronRight}
-        label="right"
-        onPressIn={() => sendMessage('right')}
-        onPressOut={onPressOut}
-        disabled={tiltMode}
-        style={{...styles.control, ...styles.right}}
-      />
+      <View style={styles.circleOuter}/>
+        <View style={styles.circleInner}/>
+      </View>
       <View style={styles.info}>
         <GameInfo
           movementSpeed={movementSpeed}
@@ -195,23 +164,23 @@ const styles = StyleSheet.create({
     left: 0,
   },
   forward: {
-    top: 0,
-    left: BUTTON_SIZE,
+    top: 0 + SHIFT,
+    left: BUTTON_SIZE + SHIFT,
     paddingBottom: 5,
   },
   backward: {
-    top: BUTTON_SIZE * 2,
-    left: BUTTON_SIZE,
+    top: BUTTON_SIZE * 2 + SHIFT,
+    left: BUTTON_SIZE + SHIFT,
     paddingTop: 5,
   },
   left: {
-    top: BUTTON_SIZE,
-    left: 0,
+    top: BUTTON_SIZE + SHIFT,
+    left: 0 + SHIFT,
     paddingRight: 5,
   },
   right: {
-    top: BUTTON_SIZE,
-    left: BUTTON_SIZE * 2,
+    top: BUTTON_SIZE + SHIFT,
+    left: BUTTON_SIZE * 2 + SHIFT,
     paddingLeft: 5,
   },
   info: {
