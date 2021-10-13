@@ -10,7 +10,8 @@ export default function Home({IPAddress,
   options,
   setOptions,
   isConnected,
-  setIsConnected
+  setIsConnected,
+  isOnline
 }) {
   const spinValue = new Animated.Value(0);
   const [newAddress, setNewAddress] = useState('');
@@ -56,7 +57,7 @@ export default function Home({IPAddress,
     <View style={styles.container}>
       <Text style={styles.title}>Choose a robot</Text>
       <View style={styles.buttonWrapper}>
-        {options.map(({name, address}) => {
+        {options?.map(({name, address}) => {
           return (
               <Pressable
                 style={[
@@ -64,7 +65,7 @@ export default function Home({IPAddress,
                   IPAddress === address && styles.buttonItemActive                  
                 ]}
                 onPressIn={() => {
-                  setIsConnected(null)
+                  isOnline && setIsConnected(false)
                 }}
                 onPressOut={() => {
                   setIPAddress(address === IPAddress ? null : address)

@@ -90,7 +90,7 @@ export default function GamePad({sendMessage, lastCommand, information}) {
         />
         <Text style={styles.text}>{`Movement speed ${movementSpeed}%`}</Text>
       </View>
-      <Button
+      {/* <Button
         icon={Compass}
         onPressIn={() => {
           setRollTare(rotation.roll);
@@ -102,7 +102,7 @@ export default function GamePad({sendMessage, lastCommand, information}) {
         }}
         sendMessage={sendMessage}
         style={{...styles.control, ...styles.tilt}}
-      />
+      /> */}
       <View style={styles.circleOuter}>
         <View style={styles.circleInner}/>
       </View>
@@ -138,6 +138,24 @@ const styles = StyleSheet.create({
   slider: {
     width: 220,
     height: 30,
+  },
+  circleOuter: {
+    position: 'absolute',
+    top: 10,
+    left: 0,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: 'rgba(255,255,255,0.3)'
+  },
+  circleInner: {
+    position: 'absolute',
+    top: 50,
+    left: 50,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'rgba(255,255,255,0.3)'
   },
   text: {
     textTransform: 'capitalize',

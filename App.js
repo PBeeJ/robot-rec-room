@@ -27,7 +27,8 @@ export default function App() {
   const [options, setOptions] = useState([]);
   const [isConnected, setIsConnected] = useState(false);
   const [lastCommand, setLastCommand] = useState(null);
-  
+  const isEnabled = isConnected || !isOnline;
+
   function sendMessage(message) {
     if (socketRef?.current?.send) {
       socketRef?.current?.send(message);
@@ -125,10 +126,10 @@ export default function App() {
             />
           </Link>
           <Link
-            to={isConnected ? "/controls" : undefined}
-            style={{...styles.navItem, borderColor: isConnected ? 'lightgreen' : 'grey'}}>
+            to={isEnabled ? "/controls" : undefined}
+            style={{...styles.navItem, borderColor: isEnabled ? 'lightgreen' : 'grey'}}>
             <ControlsIcon
-              stroke={isConnected ? 'lightgreen' : 'grey'}
+              stroke={isEnabled ? 'lightgreen' : 'grey'}
               width={parseInt(ICON_SIZE, 10)}
               height={parseInt(ICON_SIZE, 10)}
               strokeWidth={1.5}
@@ -137,6 +138,7 @@ export default function App() {
         </View>
         <Route exact path="/">
           <Home
+            isOnline={isOnline}
             isConnected={isConnected}
             setIsConnected={setIsConnected}
             setIPAddress={setIPAddress}
