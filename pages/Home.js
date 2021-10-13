@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react';
-import {StyleSheet, Text, View, TextInput, Pressable, Animated, Easing} from 'react-native';
-import {useState} from 'react/cjs/react.development';
-import {PlusCircle, Umbrella} from 'react-native-feather';
+import {
+  StyleSheet, Text, View, TextInput, Pressable, Animated, Easing,
+} from 'react-native';
+import { useState } from 'react/cjs/react.development';
+import { PlusCircle, Umbrella } from 'react-native-feather';
 
 // TODO: wait for socket to reconnect before allowing access to controls route
 
-export default function Home({IPAddress,
+export default function Home({
+  IPAddress,
   setIPAddress,
   options,
   setOptions,
   isConnected,
   setIsConnected,
-  isOnline
+  isOnline,
 }) {
   const spinValue = new Animated.Value(0);
   const [newAddress, setNewAddress] = useState('');
@@ -23,31 +26,31 @@ export default function Home({IPAddress,
         spinValue,
         {
           toValue: 1,
-          duration: 3000,
+          duration: 2500,
           easing: Easing.linear, // Easing is an additional import from react-native
-          useNativeDriver: true  // To make use of native driver for performance
-        }
+          useNativeDriver: true, // To make use of native driver for performance
+        },
       ),
       {
-        iterations: 10
-      }
-    ).start()
-  }, [spinValue])
+        iterations: 100,
+      },
+    ).start();
+  }, [spinValue]);
 
   const spin = spinValue.interpolate({
     inputRange: [0, 1],
-    outputRange: ['0deg', '360deg']
-  })
+    outputRange: ['0deg', '360deg'],
+  });
 
   function addNewAddress() {
-    setOptions(opt => [...opt, {name: newName, address: newAddress}]);
+    setOptions((opt) => [...opt, { name: newName, address: newAddress }]);
     setNewAddress('');
     setNewName('');
     setIPAddress(newAddress);
   }
 
   function removeAddress(address) {
-    setOptions(opt => opt.filter(o => o.address !== address));
+    setOptions((opt) => opt.filter((o) => o.address !== address));
     if (address === IPAddress) {
       setIPAddress(null);
     }
@@ -57,36 +60,47 @@ export default function Home({IPAddress,
     <View style={styles.container}>
       <Text style={styles.title}>Choose a robot</Text>
       <View style={styles.buttonWrapper}>
-        {options?.map(({name, address}) => {
-          return (
-              <Pressable
-                style={[
-                  styles.buttonItem,
-                  IPAddress === address && styles.buttonItemActive                  
-                ]}
-                onPressIn={() => {
-                  isOnline && setIsConnected(false)
-                }}
-                onPressOut={() => {
-                  setIPAddress(address === IPAddress ? null : address)
-                }}
-                key={`${name} (${address})`}           
-              >
-                <Text style={[
-                  styles.buttonTitle,
-                  IPAddress === address && isConnected && styles.titleConnected
-                ]}>{name}</Text>
-                <Text style={styles.buttonSubtitle}>{address}</Text>
-                <Pressable 
-                  style={styles.closeContainer}
-                  hitSlop={10}
-                  onPressOut={() => removeAddress(address)}
-                >
-                  <Text style={styles.closeText}>x</Text>
-                </Pressable>
-              </Pressable>
-          );
-        })}
+        {options?.map(({ name, address }) => (
+          <Pressable
+            style={[
+              styles.buttonItem,
+              IPAddress === address && styles.buttonItemActive,
+            ]}
+            onPressIn={() => {
+              if (isOnline) { setIsConnected(false); }
+            }}
+            onPressOut={() => {
+              setIPAddress(address === IPAddress ? null : address);
+            }}
+            key={`${name} (${address})`}
+          >
+            <Text style={[
+              styles.buttonTitle,
+              IPAddress === address && isConnected && styles.titleConnected,
+            ]}>{name}</Text>
+            <Text style={styles.buttonSubtitle}>{address}</Text>
+            <Pressable
+              style={styles.closeContainer}
+              hitSlop={10}
+              onPressOut={() => removeAddress(address)}
+            >
+              <Text style={styles.closeText}>x</Text>
+            </Pressable>
+            {isConnected === null && (
+              <View style={styles.loading}>
+                <Animated.View style={{ transform: [{ rotate: spin }] }}>
+                  {/* TODO: randomize this umbrella */}
+                  <Umbrella
+                    stroke={'white'}
+                    width={50}
+                    height={50}
+                    style={styles.icon}
+                  />
+                </Animated.View>
+              </View>
+            )}
+          </Pressable>
+        ))}
       </View>
       <Text style={styles.title}>Add a new robot</Text>
       <View style={styles.inputWrapper}>
@@ -116,18 +130,6 @@ export default function Home({IPAddress,
           />
         </Pressable>
       </View>
-      {isConnected === null && (
-        <View style={styles.loading}>
-          <Animated.View style={{transform: [{rotate: spin}] }}>
-            <Umbrella
-              stroke={'white'}
-              width={100}
-              height={100}
-              style={styles.icon}
-            />
-          </Animated.View>
-        </View>
-      )}
     </View>
   );
 }
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     justifyContent: 'center',
-    padding: 20
+    padding: 20,
   },
   buttonWrapper: {
     display: 'flex',
@@ -168,23 +170,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     display: 'flex',
+    zIndex: 1,
   },
   closeText: {
     color: 'white',
     lineHeight: 16,
     fontWeight: '700',
-    fontSize: 16
+    fontSize: 16,
   },
   buttonTitle: {
     color: 'rgba(0,0,0,0.3)',
     fontSize: 17,
     fontWeight: '800',
-    marginBottom: 2
+    marginBottom: 2,
   },
   buttonSubtitle: {
     color: 'rgba(0,0,0,0.5)',
     fontSize: 10,
-    fontWeight: '800'
+    fontWeight: '800',
   },
   title: {
     color: 'white',
@@ -214,7 +217,7 @@ const styles = StyleSheet.create({
     left: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor:  'rgba(0,0,0,0.5)',
-    zIndex: 3
-  }
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex: 0,
+  },
 });

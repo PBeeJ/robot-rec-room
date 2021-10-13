@@ -1,12 +1,12 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-export default function ArrowData({movement, zeroPoint}) {
+export default function ArrowData({ movement, zeroPoint }) {
   if (!zeroPoint) {
     return null;
   }
 
-  function DataItem({pos}) {
+  function DataItem({ pos }) {
     const value = zeroPoint ? Math.round(zeroPoint[pos] - movement[pos]) : 0;
     const rawValue = movement[pos]?.toFixed(1);
 

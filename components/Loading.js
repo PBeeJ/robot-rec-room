@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, ActivityIndicator} from 'react-native';
+import { StyleSheet, Text, ActivityIndicator } from 'react-native';
 
-export default function Loading({message}) {
+export default function Loading({ message }) {
   return (
     <>
       <ActivityIndicator size="large" color="white" />

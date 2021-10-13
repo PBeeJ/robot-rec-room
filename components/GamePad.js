@@ -10,6 +10,7 @@ const BUTTON_SIZE = parseInt(SIZE, 10);
 
 export default function GamePad({ sendMessage, lastCommand, information }) {
   const [isJoystickEnabled, setIsJoystickEnabled] = useState(false);
+  console.log('isJoystickEnabled: ', isJoystickEnabled);
   const [dragPosition, setDragPosition] = useState({ x: 40, y: 40 });
   const [movementSpeed, setMovementSpeed] = useState(
     parseInt(DEFAULT_SPEED, 10),

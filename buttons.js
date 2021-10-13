@@ -53,7 +53,8 @@ export default [
         label: 'Movement speed',
         command: 'wsB',
         description:
-          'this sets the move speed to N% - Anything under 25% does not seem to produce enough power to move anything',
+          'this sets the move speed to N% - Anything under 25% '
+          + 'does not seem to produce enough power to move anything',
         type: 'range',
         min: 0,
         max: 100,
@@ -233,7 +234,8 @@ export default [
   //     {
   //       label: 'automatic',
   //       command: 'automatic',
-  //       description: 'starts the automatic feature - be warned, this will send the robot off into a mad dash',
+  //       description: 'starts the automatic feature - be warned,
+  //                     this will send the robot off into a mad dash',
   //       cancelCommand: 'automaticOff',
   //     },
   //     {
@@ -245,7 +247,8 @@ export default [
   //     {
   //       label: 'trackLine',
   //       command: 'trackLine',
-  //       description: 'starts the line tracking feature - be warned, this will send the robot off into a mad dash',
+  //       description: 'starts the line tracking feature - be warned,
+  //                     this will send the robot off into a mad dash',
   //       cancelCommand: 'politrackLineOffceOff',
   //     },
   //   ],

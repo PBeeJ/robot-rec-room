@@ -1,14 +1,14 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 
 // TODO: start the controls when you touch the screen, and reset/cancel when not touching
 
-function Arrow({arrow}) {
+function Arrow({ arrow }) {
   return <Icon name={arrow} size={60} color="#900" />;
 }
 
-export default function GrowyArrows({arrows, zeroPoint}) {
+export default function GrowyArrows({ arrows, zeroPoint }) {
   if (!zeroPoint) {
     return null;
   }

@@ -11,10 +11,11 @@ import {
   OFFLINE_MODE,
   WEBSOCKET_PORT,
   SERVER_INFO_UPDATE_SPEED,
+  // eslint-disable-next-line import/no-unresolved
 } from '@env';
-import Controls from './pages/Controls.js';
-import Home from './pages/Home.js';
-import storage from './storage.js';
+import Controls from './pages/Controls';
+import Home from './pages/Home';
+import storage from './storage';
 
 const isOnline = OFFLINE_MODE !== 'true';
 const INITIAL_OPTIONS = [];
@@ -66,7 +67,7 @@ export default function App() {
 
   function handleClose() {
     console.log('Connection closed');
-    setIsConnected(false);
+    setIsConnected(null);
     setIPAddress(null);
   }
 
@@ -74,7 +75,9 @@ export default function App() {
   useEffect(() => {
     storage
       .load({ key: 'options', autoSync: true, syncInBackground: true })
-      .then((initialOptions) => setOptions(initialOptions.length ? initialOptions : INITIAL_OPTIONS))
+      .then((initialOptions) => setOptions(
+        initialOptions.length ? initialOptions : INITIAL_OPTIONS,
+      ))
       .catch((err) => console.warn(err.message));
   }, []);
 
@@ -88,15 +91,15 @@ export default function App() {
   }, [options]);
 
   useEffect(() => {
+    let timer;
     if (IPAddress) {
-      let timer;
       // Fetch the info data
       clearInterval(timer);
       timer = setInterval(() => {
         sendMessage('get_info');
       }, parseInt(SERVER_INFO_UPDATE_SPEED, 10));
-      return () => clearInterval(timer);
     }
+    return () => clearInterval(timer);
   }, [IPAddress]);
 
   return (
@@ -114,7 +117,7 @@ export default function App() {
       )}
       <NativeRouter>
         <View style={styles.nav}>
-          <Link to="/" style={{ ...styles.navItem, borderColor: 'orange' }}>
+          <Link to="/" style={[styles.navItem, { borderColor: 'orange' }]}>
             <HomeIcon
               stroke="orange"
               fill="none"
@@ -125,7 +128,7 @@ export default function App() {
           </Link>
           <Link
             to={isEnabled ? '/controls' : undefined}
-            style={{ ...styles.navItem, borderColor: isEnabled ? 'lightgreen' : 'grey' }}>
+            style={[styles.navItem, { borderColor: isEnabled ? 'lightgreen' : 'grey' }]}>
             <ControlsIcon
               stroke={isEnabled ? 'lightgreen' : 'grey'}
               width={parseInt(ICON_SIZE, 10)}

@@ -72,7 +72,7 @@ export default function TiltButton({ sendMessage }) {
         setTiltMode(false);
       }}
       sendMessage={sendMessage}
-      style={{ ...styles.control, ...styles.tilt }}
+      style={[styles.control, styles.tilt]}
     />
   );
 }

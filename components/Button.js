@@ -1,7 +1,8 @@
 import React from 'react';
-import {Pressable, Text, StyleSheet} from 'react-native';
+import { Pressable, Text, StyleSheet } from 'react-native';
 
-import {BUTTON_SIZE, ICON_SIZE} from '@env';
+// eslint-disable-next-line import/no-unresolved
+import { BUTTON_SIZE, ICON_SIZE } from '@env';
 
 // TODO: use hitSlop to make the button hit area bigger
 

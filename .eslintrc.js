@@ -25,4 +25,9 @@ module.exports = {
     'no-use-before-define': 0, // so we can put styles below
     'no-console': 0, // when in rome, stays in rome
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
 };

@@ -1,13 +1,13 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {WebView} from 'react-native-webview';
+import { StyleSheet } from 'react-native';
+import { WebView } from 'react-native-webview';
 
-export default function Video({url, width, height}) {
+export default function Video({ url }) {
   function formatHtml() {
     return (
-      '<html style="pointer-events:none"><body style="pointer-events:none"><img src="' +
-      url +
-      '" width="100%" style="pointer-events:none; min-height: 100%; min-width: 100%; position: fixed; top: 0; left: 0;"></body></html>'
+      `<html style="pointer-events:none"><body style="pointer-events:none"><img src="${
+        url
+      }" width="100%" style="pointer-events:none; min-height: 100%; min-width: 100%; position: fixed; top: 0; left: 0;"></body></html>`
     );
   }
 
@@ -17,9 +17,11 @@ export default function Video({url, width, height}) {
       automaticallyAdjustContentInsets={true}
       scalesPageToFit={true}
       startInLoadingState={false}
-      contentInset={{top: 0, right: 0, left: 0, bottom: 0}}
+      contentInset={{
+        top: 0, right: 0, left: 0, bottom: 0,
+      }}
       scrollEnabled={false}
-      source={{html: formatHtml(), baseUrl: '/'}}
+      source={{ html: formatHtml(), baseUrl: '/' }}
     />
   );
 }

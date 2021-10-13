@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import Button from './Button';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 import {
   Sliders,
   ArrowUp,
@@ -11,29 +10,32 @@ import {
   Minus,
 } from 'react-native-feather';
 
-import {BUTTON_SIZE as SIZE} from '@env';
+// eslint-disable-next-line import/no-unresolved
+import { BUTTON_SIZE as SIZE } from '@env';
+import Button from './Button';
+
 const BUTTON_SIZE = parseInt(SIZE, 10);
 
-export default function RobotPad({sendMessage}) {
+export default function RobotPad({ sendMessage }) {
   const containerWidth = styles.draggable.left * -1;
   const [dragPosition, setDragPosition] = useState(containerWidth + 95);
   const [start, setStart] = useState(null);
 
-  function handleStart({nativeEvent}) {
-    const {pageX} = nativeEvent;
+  function handleStart({ nativeEvent }) {
+    const { pageX } = nativeEvent;
     setStart(pageX);
     return true;
   }
 
-  function handleMove({nativeEvent}) {
-    const {pageX} = nativeEvent;
+  function handleMove({ nativeEvent }) {
+    const { pageX } = nativeEvent;
     const position = Math.round(pageX - containerWidth);
     setDragPosition(position);
     return true;
   }
 
-  function handleEnd({nativeEvent}) {
-    const {pageX} = nativeEvent;
+  function handleEnd({ nativeEvent }) {
+    const { pageX } = nativeEvent;
     const distanceDragged = Math.abs(start - pageX);
 
     if (distanceDragged < 10) {
@@ -44,8 +46,9 @@ export default function RobotPad({sendMessage}) {
         setDragPosition(0);
       }
     } else {
+      const pos = dragPosition < containerWidth / 2 + 60;
       // Drag detected
-      if (dragPosition < containerWidth / 2 + 60) {
+      if (pos) {
         setDragPosition(0);
       } else {
         setDragPosition(containerWidth + 95);
@@ -61,61 +64,61 @@ export default function RobotPad({sendMessage}) {
 
   return (
     <View
-      style={{...styles.container, right}}
+      style={[styles.container, right]}
       onStartShouldSetResponder={handleStart}
       onResponderMove={handleMove}
       onResponderRelease={handleEnd}>
-      <View style={{...styles.control, ...styles.draggable}}>
+      <View style={[styles.control, styles.draggable]}>
         <Sliders stroke="white" width={30} height={30} />
         <Text style={styles.text}>controls</Text>
       </View>
       <Button
         icon={Plus}
         iconSize={24}
-        label="claw"      
+        label="claw"
         onPressIn={() => sendMessage('grab')}
         onPressOut={() => sendMessage('stop')}
-        style={{...styles.control, ...styles.grab}}
+        style={[styles.control, styles.grab]}
       />
       <Button
         icon={Minus}
         iconSize={24}
-        label="claw"      
+        label="claw"
         onPressIn={() => sendMessage('loose')}
         onPressOut={() => sendMessage('stop')}
-        style={{...styles.control, ...styles.loose}}
+        style={[styles.control, styles.loose]}
       />
       <Button
         icon={RotateCcw}
         iconSize={24}
-        label="claw"      
+        label="claw"
         onPressIn={() => sendMessage('lookleft')}
         onPressOut={() => sendMessage('LRstop')}
-        style={{...styles.control, ...styles.lookleft}}
+        style={[styles.control, styles.lookleft]}
       />
       <Button
         icon={RotateCw}
         iconSize={24}
-        label="claw"      
+        label="claw"
         onPressIn={() => sendMessage('lookright')}
         onPressOut={() => sendMessage('LRstop')}
-        style={{...styles.control, ...styles.lookright}}
+        style={[styles.control, styles.lookright]}
       />
       <Button
         icon={ArrowUp}
         iconSize={24}
-        label="camera"      
+        label="camera"
         onPressIn={() => sendMessage('up')}
         onPressOut={() => sendMessage('UDstop')}
-        style={{...styles.control, ...styles.up}}
+        style={[styles.control, styles.up]}
       />
       <Button
         icon={ArrowDown}
         iconSize={24}
-        label="camera"      
+        label="camera"
         onPressIn={() => sendMessage('down')}
         onPressOut={() => sendMessage('UDstop')}
-        style={{...styles.control, ...styles.down}}
+        style={[styles.control, styles.down]}
       />
     </View>
   );

@@ -1,22 +1,25 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {ArrowLeft, ArrowRight, ArrowUp, ArrowDown} from 'react-native-feather';
+import { StyleSheet, View } from 'react-native';
+import {
+  ArrowLeft, ArrowRight, ArrowUp, ArrowDown,
+} from 'react-native-feather';
 
+// eslint-disable-next-line import/no-unresolved
+import { BUTTON_SIZE as SIZE } from '@env';
 import Button from './Button';
 
-import {BUTTON_SIZE as SIZE} from '@env';
 const BUTTON_SIZE = parseInt(SIZE, 10);
 
-export default function ButtonPad({sendMessage}) {
+export default function ButtonPad({ sendMessage }) {
   return (
     <View style={styles.container}>
       <Button
         icon={ArrowUp}
         iconSize={24}
-        label="hand"      
+        label="hand"
         onPressIn={() => sendMessage('handup')}
         onPressOut={() => sendMessage('handstop')}
-        style={{...styles.control, ...styles.handUp}}
+        style={[styles.control, styles.handUp]}
       />
       <Button
         icon={ArrowDown}
@@ -25,7 +28,7 @@ export default function ButtonPad({sendMessage}) {
         sendMessage={sendMessage}
         onPressIn={() => sendMessage('handdown')}
         onPressOut={() => sendMessage('handstop')}
-        style={{...styles.control, ...styles.handDown}}
+        style={[styles.control, styles.handDown]}
       />
       <Button
         icon={ArrowLeft}
@@ -34,7 +37,7 @@ export default function ButtonPad({sendMessage}) {
         sendMessage={sendMessage}
         onPressIn={() => sendMessage('armdown')}
         onPressOut={() => sendMessage('armstop')}
-        style={{...styles.control, ...styles.armDown}}
+        style={[styles.control, styles.armDown]}
       />
       <Button
         icon={ArrowRight}
@@ -43,7 +46,7 @@ export default function ButtonPad({sendMessage}) {
         sendMessage={sendMessage}
         onPressIn={() => sendMessage('armup')}
         onPressOut={() => sendMessage('armstop')}
-        style={{...styles.control, ...styles.armUp}}
+        style={[styles.control, styles.armUp]}
       />
     </View>
   );

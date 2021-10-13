@@ -1,7 +1,7 @@
 import React from 'react';
-import ArmPad from '../components/ArmPad.js'
-import GamePad from '../components/GamePad.js';
-import RobotPad from '../components/RobotPad.js';
+import ArmPad from '../components/ArmPad';
+import GamePad from '../components/GamePad';
+import RobotPad from '../components/RobotPad';
 // import Arrows from '../components/Arrows.js';
 
 export default function Controls({
