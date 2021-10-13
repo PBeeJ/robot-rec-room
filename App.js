@@ -1,14 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {NativeRouter, Route, Link} from 'react-router-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { NativeRouter, Route, Link } from 'react-router-native';
 import WS from 'react-native-websocket';
 
-import Controls from './pages/Controls.js';
-import Home from './pages/Home.js';
-import {Home as HomeIcon, Sliders as ControlsIcon} from 'react-native-feather';
-import storage from './storage.js';
-
+import { Home as HomeIcon, Sliders as ControlsIcon } from 'react-native-feather';
 import {
   ICON_SIZE,
   BUTTON_SIZE,
@@ -16,6 +12,9 @@ import {
   WEBSOCKET_PORT,
   SERVER_INFO_UPDATE_SPEED,
 } from '@env';
+import Controls from './pages/Controls.js';
+import Home from './pages/Home.js';
+import storage from './storage.js';
 
 const isOnline = OFFLINE_MODE !== 'true';
 const INITIAL_OPTIONS = [];
@@ -30,7 +29,7 @@ export default function App() {
   const isEnabled = isConnected || !isOnline;
 
   function sendMessage(message) {
-    if (socketRef?.current?.send) {
+    if (isConnected && socketRef?.current?.send) {
       socketRef?.current?.send(message);
       if (message !== 'get_info') {
         setLastCommand(message);
@@ -38,7 +37,8 @@ export default function App() {
     }
   }
 
-  function handleMessage({data}) {
+  function handleMessage({ data }) {
+    console.log('data: ', data);
     // Don't parse the string if it contains the initial congratulation message
     if (typeof data === 'string' && !data.includes('congratulation')) {
       try {
@@ -47,15 +47,15 @@ export default function App() {
           setInformation(message.data);
         }
       } catch (e) {
-        console.warn(e);
+        console.warn(e.message);
       }
     }
   }
 
   function handleOpen() {
     console.log('Connection opened');
-    setIsConnected(true);
     sendMessage('admin:123456'); // Authorize the connection
+    setIsConnected(true);
   }
 
   function handleError({ message }) {
@@ -73,19 +73,17 @@ export default function App() {
   // Fetch initial options from storage
   useEffect(() => {
     storage
-      .load({key: 'options', autoSync: true, syncInBackground: true})
-      .then(initialOptions =>
-        setOptions(initialOptions.length ? initialOptions : INITIAL_OPTIONS),
-      )
-      .catch(err => console.warn(err.message));
+      .load({ key: 'options', autoSync: true, syncInBackground: true })
+      .then((initialOptions) => setOptions(initialOptions.length ? initialOptions : INITIAL_OPTIONS))
+      .catch((err) => console.warn(err.message));
   }, []);
 
   // Persist options to storage
   useEffect(() => {
     if (options.length) {
       storage
-        .save({key: 'options', data: options})
-        .catch(err => console.warn(err.message));
+        .save({ key: 'options', data: options })
+        .catch((err) => console.warn(err.message));
     }
   }, [options]);
 
@@ -116,7 +114,7 @@ export default function App() {
       )}
       <NativeRouter>
         <View style={styles.nav}>
-          <Link to="/" style={{...styles.navItem, borderColor: 'orange'}}>
+          <Link to="/" style={{ ...styles.navItem, borderColor: 'orange' }}>
             <HomeIcon
               stroke="orange"
               fill="none"
@@ -126,8 +124,8 @@ export default function App() {
             />
           </Link>
           <Link
-            to={isEnabled ? "/controls" : undefined}
-            style={{...styles.navItem, borderColor: isEnabled ? 'lightgreen' : 'grey'}}>
+            to={isEnabled ? '/controls' : undefined}
+            style={{ ...styles.navItem, borderColor: isEnabled ? 'lightgreen' : 'grey' }}>
             <ControlsIcon
               stroke={isEnabled ? 'lightgreen' : 'grey'}
               width={parseInt(ICON_SIZE, 10)}

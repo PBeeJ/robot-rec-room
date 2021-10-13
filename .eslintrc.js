@@ -21,5 +21,8 @@ module.exports = {
     'react-native',
   ],
   rules: {
+    'react/prop-types': 0,
+    'no-use-before-define': 0, // so we can put styles below
+    'no-console': 0, // when in rome, stays in rome
   },
 };

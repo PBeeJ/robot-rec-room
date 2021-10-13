@@ -1,10 +1,15 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import {WEBSOCKET_URL} from '@env'; // I'm a file edit for the magic to recognize a change has happened.
+// eslint-disable-next-line import/no-unresolved
+import { WEBSOCKET_URL } from '@env';
 
-function Item({name}) {
+function Item({ name }) {
   return <Text style={styles.text}>{name}</Text>;
+}
+
+function formatValue(value) {
+  return value.toFixed(2);
 }
 
 export default function GameInfo({
@@ -12,21 +17,21 @@ export default function GameInfo({
   lastCommand,
   rotation,
   information,
-  rollTare,
+  dragPosition,
 }) {
-  function formatValue(value) {
-    return value.toFixed(2);
-  }
+  const convertedX = Math.round((dragPosition.x - 40) * 2);
+  const convertedY = Math.round((dragPosition.y - 40) * 2);
 
   return (
     <View style={styles.container}>
-      {!isNaN(movementSpeed) && (
+      {!Number.isNaN(movementSpeed) && (
         <View style={styles.wrapper}>
           <Text style={styles.title}>Config</Text>
           <View style={styles.column}>
             <Item name={`server: ${WEBSOCKET_URL}`} />
             <Item name={`movement speed: ${movementSpeed}%`} />
-            <Item name={`roll tare: ${rollTare}%`} />
+            <Item name={`horizontal: ${convertedX}%`} />
+            <Item name={`vertical: ${convertedY}%`} />
           </View>
         </View>
       )}
