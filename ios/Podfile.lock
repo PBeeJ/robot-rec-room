@@ -345,8 +345,6 @@ PODS:
     - React-Core
   - RNCPicker (2.1.0):
     - React-Core
-  - RNSensors (7.3.3):
-    - React-Core
   - RNSVG (12.1.1):
     - React
   - RNVectorIcons (8.1.0):
@@ -412,7 +410,6 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
-  - RNSensors (from `../node_modules/react-native-sensors`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -501,8 +498,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
-  RNSensors:
-    :path: "../node_modules/react-native-sensors"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
@@ -557,12 +552,11 @@ SPEC CHECKSUMS:
   ReactCommon: eb059748e842a1a86025ebbd4ac9d99e74492f88
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCPicker: f7a40b21b915b7a187624d52f52b7bc2f73ea413
-  RNSensors: 7baffb62308e167902b28e5f74e072804bfc1ad1
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   Yoga: c11abbf5809216c91fcd62f5571078b83d9b6720
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b043020e37cb711035eadf57aea989916711e4f7
+PODFILE CHECKSUM: 8ad74639db610ab187ebc0c449b967e42be0b454
 
 COCOAPODS: 1.10.2

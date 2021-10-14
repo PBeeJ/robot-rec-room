@@ -12,9 +12,8 @@ target 'RaspTank' do
     :hermes_enabled => false
   )
 
-  pod 'RNSensors', :path => '../node_modules/react-native-sensors'
+  # pod 'RNSensors', :path => '../node_modules/react-native-sensors'
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
   target 'RaspTankTests' do
     inherit! :complete
