@@ -37,13 +37,20 @@ export default function GamePad({ sendMessage, lastCommand, information }) {
 
     const convertedX = Math.round((x - 40) * 2);
     const convertedY = Math.round((y - 40) * 2);
-    sendMessage(`TiltControl ${convertedY} ${convertedX}`);
+    // HACK: I flip these values around to balance my hacky maths
+    sendMessage(
+      `TiltControl 
+      ${parseInt(convertedY * -1 * movementSpeed / 100,10)} 
+      
+      ${parseInt(convertedX * -1 * movementSpeed / 100,10)}
+    `);
     return true;
   }
 
   // Reset back to the center position
   function handleEnd() {
     setDragPosition({ x: 40, y: 40 });
+    sendMessage('WheelStop');
     setIsJoystickEnabled(false);
   }
 
@@ -90,26 +97,26 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 20,
-    left: 35,
+    left: 0,
+    bottom: 0,
     padding: 10,
-    width: BUTTON_SIZE * 3,
-    height: BUTTON_SIZE * 3,
+    right: 0,
   },
   sliderWrapper: {
     position: 'absolute',
     height: 50,
-    bottom: -85,
-    left: -30,
+    bottom: 100,
+    left: 10,
     alignItems: 'center',
   },
   slider: {
-    width: 220,
+    width: 200,
     height: 30,
   },
   circleOuter: {
     position: 'absolute',
     top: 10,
-    left: 0,
+    left: 35,
     width: 150,
     height: 150,
     borderRadius: 75,
@@ -126,13 +133,14 @@ const styles = StyleSheet.create({
   text: {
     textTransform: 'capitalize',
     fontWeight: '700',
-    fontSize: 8,
+    fontSize: 10,
     lineHeight: 8,
     color: 'white',
   },
   info: {
     position: 'absolute',
-    bottom: -160,
+    bottom: 0,
     left: 0,
+    right: 0
   },
 });

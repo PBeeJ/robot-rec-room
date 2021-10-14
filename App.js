@@ -150,6 +150,7 @@ export default function App() {
             information={information}
             lastCommand={lastCommand}
             sendMessage={sendMessage}
+            IPAddress={IPAddress}
           />
         </Route>
       </NativeRouter>

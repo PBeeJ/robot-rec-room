@@ -55,7 +55,7 @@ export default function Home({IPAddress,
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Choose a robot</Text>
+      <Text style={styles.title}>Choose one of the saved robots ...</Text>
       <View style={styles.buttonWrapper}>
         {options?.map(({name, address}) => {
           return (
@@ -74,9 +74,13 @@ export default function Home({IPAddress,
               >
                 <Text style={[
                   styles.buttonTitle,
-                  IPAddress === address && isConnected && styles.titleConnected
+                  IPAddress === address && isConnected && styles.connected
                 ]}>{name}</Text>
                 <Text style={styles.buttonSubtitle}>{address}</Text>
+                <Text style={[
+                  styles.buttonStatus,
+                  isConnected && styles.connected
+                ]}>{isConnected ? 'Connected' : 'Not Connected'}</Text>
                 <Pressable 
                   style={styles.closeContainer}
                   hitSlop={10}
@@ -88,7 +92,7 @@ export default function Home({IPAddress,
           );
         })}
       </View>
-      <Text style={styles.title}>Add a new robot</Text>
+      <Text style={[styles.title, { opacity: 0.5 }]}>... Or add a new robot</Text>
       <View style={styles.inputWrapper}>
         <TextInput
           style={styles.input}
@@ -148,11 +152,12 @@ const styles = StyleSheet.create({
   buttonItem: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    width: 100,
-    height: 80,
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    width: 120,
+    height: 100,
     borderRadius: 3,
     marginRight: 20,
+    marginTop: 10,
   },
   buttonItemActive: {
     backgroundColor: 'rgba(255,255,255,0.9)',
@@ -176,23 +181,30 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   buttonTitle: {
-    color: 'rgba(0,0,0,0.3)',
-    fontSize: 17,
+    color: 'rgba(0,0,0,0.5)',
+    fontSize: 20,
     fontWeight: '800',
-    marginBottom: 2
   },
   buttonSubtitle: {
+    marginTop: 4,
     color: 'rgba(0,0,0,0.5)',
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: '800'
+  },
+  buttonStatus: {
+    marginTop: 5,
+    color: 'rgba(0,0,0,0.3)',
+    fontSize: 11,
+    fontWeight: '800'    
+  },
+  connected: {
+    color: 'green',
   },
   title: {
     color: 'white',
     marginBottom: 10,
     marginTop: 30,
-  },
-  titleConnected: {
-    color: 'green',
+    fontSize: 20,
   },
   inputWrapper: {
     flexDirection: 'row',
