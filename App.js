@@ -61,13 +61,11 @@ export default function App() {
   function handleError({ message }) {
     console.log('Connection error:', message);
     setIsConnected(null);
-    setIPAddress(null);
   }
 
   function handleClose() {
     console.log('Connection closed');
     setIsConnected(false);
-    setIPAddress(null);
   }
 
   // Fetch initial options from storage
